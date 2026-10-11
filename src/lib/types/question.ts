@@ -59,3 +59,11 @@ export class BasicQuestion extends Question {
     }
 }
 
+export class QuestionResult {
+    constructor(
+        public question: Question,
+        public isCorrect: boolean,
+        public studentAnswer: string,
+    ) {}
+}
+
