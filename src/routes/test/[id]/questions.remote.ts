@@ -24,7 +24,6 @@ export const checkAnswer = query(
     }),
     async ({ questionId, answerAttempt }): Promise<[boolean, Answer]> => {
         const question: Question | null = await Question.load(questionId);
-        console.log(questionId, question);
         if (!question || !question.correctAnswer || !question.markingEngine) { throw error(404, 'Question not found'); }
 
         const correctAnswer: Answer = question.correctAnswer;
