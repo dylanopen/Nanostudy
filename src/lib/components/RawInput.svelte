@@ -9,5 +9,5 @@
 </script>
 
 <input type="text" id="input-box" />
-<button on:click={submitInputBox}>Submit</button>
+<button onclick={submitInputBox}>Submit</button>
 

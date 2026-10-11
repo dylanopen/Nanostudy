@@ -5,31 +5,32 @@ export abstract class Question {
     constructor(
         public id: string,
         public prompt: string,
+        public correctAnswer: Answer | undefined,
         public markingEngine: MarkingEngine | undefined,
     ) {}
 
     static async load(id: string): Promise<Question | null> {
-	// TODO: support more question types
-	let question = await BasicQuestion.load(id);
-	if (!question) return null;
+        // TODO: support more question types
+        let question = await BasicQuestion.load(id);
+        if (!question) return null;
 
-	question.hideAnswer();
-	return question;
+        return question;
     }
 
     public hideAnswer(): void {
-	this.markingEngine = undefined;
+        this.markingEngine = undefined;
+        this.correctAnswer = undefined;
     }
 }
 
 export abstract class MarkingEngine {
-    public constructor(public correctAnswer: Answer) {}
-    public abstract isCorrect(studentAnswer: string): boolean;
+    public constructor() {}
+    public abstract isCorrect(correctAnswer: Answer, studentAnswer: string): boolean;
 }
 
 export class ExactMarkingEngine extends MarkingEngine {
-    public isCorrect(studentAnswer: string): boolean {
-        return this.correctAnswer.answers.includes(studentAnswer);
+    public isCorrect(correctAnswer: Answer, studentAnswer: string): boolean {
+        return correctAnswer.answers.includes(studentAnswer);
     }
 }
 
@@ -43,24 +44,18 @@ export class Answer {
 
 export class BasicQuestion extends Question {
     readonly type: string = "basic";
-    public correctAnswer: Answer | undefined
 
     constructor(
         id: string,
         prompt: string,
         correctAnswer: Answer
     ) {
-        super(id, prompt, new ExactMarkingEngine(correctAnswer));
-	this.correctAnswer = correctAnswer;
+        super(id, prompt, correctAnswer, new ExactMarkingEngine());
+        this.correctAnswer = correctAnswer;
     }
 
     static async load(id: string): Promise<BasicQuestion | null> {
         return await fetchBasicQuestionById({ questionId: id });
-    }
-
-    override hideAnswer(): void {
-	super.hideAnswer();
-	this.correctAnswer = undefined;
     }
 }
 
