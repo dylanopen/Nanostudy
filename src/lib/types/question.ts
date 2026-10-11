@@ -59,7 +59,7 @@ export class BasicQuestion extends Question {
     }
 }
 
-export class QuestionResult {
+export class AnswerSubmissionResult {
     constructor(
         public question: Question,
         public isCorrect: boolean,

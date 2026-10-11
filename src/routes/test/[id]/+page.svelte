@@ -1,6 +1,7 @@
 <script lang="ts">
     import RawInput from "$lib/components/RawInput.svelte"
-    import { getQuestion, checkAnswer } from "./questions.remote.ts";
+    import QuestionWorkspace from "$lib/components/QuestionWorkspace.svelte";
+    import { checkAnswer } from "$lib/api/question.remote.ts";
 
     let { data } = $props();
     let currentQuestionNumber = $state(1);
@@ -34,10 +35,9 @@
 
 <hr/>
 
-<p>{currentQuestion.prompt}</p>
+<QuestionWorkspace question={currentQuestion} />
 
 {#if answerIsCorrect == null}
-<RawInput submit={submitAnswer} />
 {:else}
 <div>Your answer: {currentAnswerAttempt}</div>
 {/if}
