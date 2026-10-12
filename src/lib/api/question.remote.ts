@@ -50,9 +50,9 @@ export const checkAnswer = query(
     }),
     async ({ questionId, answerAttempt }): Promise<AnswerSubmissionResult> => {
         const question: Question | null = await Question.load(questionId);
-        if (!question || !question.correctAnswer || !question.markingEngine) { throw error(404, 'Question not found'); }
+        if (!question || !question.answer || !question.markingEngine) { throw error(404, 'Question not found'); }
 
-        const correctAnswer: Answer = question.correctAnswer;
+        const correctAnswer: Answer = question.answer;
         const isCorrect: boolean = question.markingEngine.isCorrect(correctAnswer, answerAttempt);
 
         return new AnswerSubmissionResult(question, isCorrect, answerAttempt);

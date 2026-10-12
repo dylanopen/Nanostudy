@@ -5,7 +5,7 @@ export abstract class Question {
     constructor(
         public id: string,
         public prompt: string,
-        public correctAnswer: Answer | undefined,
+        public answer: Answer | undefined,
         public markingEngine: MarkingEngine | undefined,
     ) {}
 
@@ -19,7 +19,7 @@ export abstract class Question {
 
     public hideAnswer(): void {
         this.markingEngine = undefined;
-        this.correctAnswer = undefined;
+        this.answer = undefined;
     }
 }
 
@@ -48,10 +48,10 @@ export class BasicQuestion extends Question {
     constructor(
         id: string,
         prompt: string,
-        correctAnswer: Answer
+        answer: Answer
     ) {
-        super(id, prompt, correctAnswer, new ExactMarkingEngine());
-        this.correctAnswer = correctAnswer;
+        super(id, prompt, answer, new ExactMarkingEngine());
+        this.answer = answer;
     }
 
     static async load(id: string): Promise<BasicQuestion | null> {

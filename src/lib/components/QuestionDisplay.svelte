@@ -1,5 +1,5 @@
 <script lang="ts">
-    let { question } = $props();
+    let { question, onSubmit } = $props();
 </script>
 
 <div>{question.prompt}</div>
