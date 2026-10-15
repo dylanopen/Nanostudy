@@ -70,6 +70,11 @@
         color: var(--nano-fg-positive-color);
     }
 
+    .incorrect {
+        color: var(--nano-fg-positive-color);
+        color: var(--nano-fg-negative-color);
+    }
+
     .status-card {
         padding: 0.375rem 0.625rem;
         border-radius: 6px;
@@ -85,7 +90,6 @@
     .status-card.incorrect {
         background-color: color-mix(in srgb, var(--nano-bg-negative-color) 8%, transparent);
         border-color: color-mix(in srgb, var(--nano-bg-negative-color) 25%, transparent);
-        color: var(--nano-fg-negative-color);
     }
 
     .status-title {
