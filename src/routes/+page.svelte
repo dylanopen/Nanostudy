@@ -1,221 +1,216 @@
 <script>
-  import './layout.css';
+import './layout.css';
+import Badge from "$lib/components/Badge.svelte";
+import TestWorkspace from "$lib/components/TestWorkspace.svelte";
 </script>
 
 <div class="page-wrapper">
-  <header class="header">
-    <div class="container header-inner">
-      <a href="/" class="brand-logo">
-        <span class="brand-symbol">N</span>
-        <span class="brand-title">Nanostudy</span>
-      </a>
+    <header class="header">
+        <div class="container header-inner">
+            <a class="btn btn-accent" href="/">Nanostudy</a>
 
-      <nav class="nav-links">
-        <a href="#features">Features</a>
-        <a href="#courses">Courses</a>
-        <a href="/login" class="btn">Sign In</a>
-      </nav>
-    </div>
-  </header>
-
-  <main>
-    <section class="hero-section">
-      <div class="container hero-container">
-        <div class="badge hero-badge">
-          <span>A-Level Further Maths</span>
-          <span class="badge-dot">•</span>
-          <span>Edexcel & AQA</span>
+            <nav class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#courses">Courses</a>
+                <a href="/login" class="btn">Sign In</a>
+            </nav>
         </div>
+    </header>
 
-        <h1 class="hero-title">
-          Built to save <span class="highlight-underline">every mark</span>
-        </h1>
+    <main>
+        <section class="hero-section">
+            <div class="container hero-container">
+                <Badge color="#dad7d3" text="A-Level Mathematics & Further Mathematics for AQA, Edexcel & OCR" />
+                <br /><br />
 
-        <p class="hero-subheadline">
-          Stop guessing where you drop marks. Nanostudy pinpoints your exact mistake patterns and builds targeted practice to push you into the next grade boundary.
-        </p>
+                <h1 class="hero-title">
+                    Built to save <span class="highlight-underline">every mark</span>
+                </h1>
 
-        <div class="hero-actions">
-          <a href="/study" class="btn btn-accent btn-lg">
-            <span>Start Studying Now</span>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M5 12h14M12 5l7 7-7 7"/>
-            </svg>
-          </a>
-        </div>
+                <p class="hero-subheadline">
+                    Stop guessing where you drop marks. Nanostudy pinpoints your exact mistake patterns and builds targeted practice to push you into the next grade boundary.
+                </p>
 
-        <div class="widget-slot hero-widget-slot">
-          <!-- Svelte interactive graph or hero widget component goes here -->
-        </div>
-      </div>
-    </section>
+                <div class="hero-actions">
+                    <a href="/courses" class="btn btn-accent btn-lg">
+                        <span>Start Studying Now ➜</span>
+                    </a>
+                </div>
 
-    <section class="features-section" id="features">
-      <div class="container">
-        <hr />
-        
-        <div class="features-grid">
-          <div class="card feature-card">
-            <h3>Diagnostic Error Tracking</h3>
-            <p>Every attempted question categorizes step failures, showing exactly which algebraic manipulations or theorems drag down your score.</p>
-            <div class="widget-slot card-widget-slot">
+                <h3>Want to try it yourself?</h3>
+                <div class="widget-slot hero-widget-slot">
+                    <TestWorkspace questionIds={["example-question"]} />
+                </div>
             </div>
-          </div>
+        </section>
 
-          <div class="card feature-card">
-            <h3>Templated Math Engine</h3>
-            <p>Infinite spec-aligned questions with fuzz-tested variable constraints ensuring integer outputs and rigorous step-by-step mark scheme breakdowns.</p>
-            <div class="widget-slot card-widget-slot">
+        <section class="features-section" id="features">
+            <div class="container">
+                <hr />
+
+                <div class="features-grid">
+                    <div class="card feature-card">
+                        <h3>Stop repeating the same mistakes</h3>
+                        <p>Nanostudy maps your mistakes to exact topics and exam techniques. Spot weak areas instantly and stop wasting revision time on what you've already mastered.</p>
+                        <div class="widget-slot card-widget-slot">
+                            <!-- TODO: add statistics view component -->
+                        </div>
+                    </div>
+
+                    <div class="card feature-card">
+                        <h3>Unlimited practice to achieve <i>true mastery</i></h3>
+                        <p>Practice questions match the worked examples step-for-step. Follow the exact same logic with new numbers whenever you just need an extra attempt to get it right.</p>
+                        <div class="widget-slot card-widget-slot">
+                            <!-- TODO: add regenerating problem component -->
+                        </div>
+                    </div>
+
+                    <div class="card feature-card">
+                        <h3>A study platform built around <i>total clarity</i></h3>
+                        <p>Forget final answers. Nanostudy breaks down every line of working out, explaining the step-by-step logic so you never get stuck guessing.</p>
+                        <div class="widget-slot card-widget-slot">
+                            <!-- TODO: add question feedback component -->
+                        </div>
+                    </div>
+
+                    <div class="card feature-card">
+                        <h3>And it's <i>actually</i> free</h3>
+                        <p>Every core feature is free forever. Zero ads, zero paywalls, and no daily limits - just an honest revision platform built to push you into your target grade boundary.</p>
+                        <div class="widget-slot card-widget-slot">
+                            <!-- TODO: add regenerating problem component -->
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
+        </section>
+    </main>
 
-  <footer class="footer">
-    <div class="container footer-inner">
-      <p>© Nanostudy. Built for A-Level & GCSE STEM students.</p>
-    </div>
-  </footer>
+    <footer class="footer">
+        <div class="container">
+            <p class="footer-text">
+                © 2026 Nanostudy • Built for students, by a student. Coded & curated by <a href="https://dylancode.dev" target="_blank" rel="noopener">Dylan Rogers</a>.
+            </p>
+        </div>
+    </footer>
 </div>
 
 <style>
-  .page-wrapper {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .header {
+.header {
     padding: 1.25rem 0;
     border-bottom: 1px solid var(--nano-border-subtle-color);
-  }
+}
 
-  .header-inner {
-    display: flex;
+.header-inner {
+    display: grid;
+    grid-template-columns: auto 1fr;
     align-items: center;
-    justify-content: space-between;
-  }
+}
 
-  .brand-logo {
-    display: flex;
-    align-items: center;
-    gap: 0.625rem;
-    text-decoration: none;
-  }
-
-  .brand-symbol {
-    width: 32px;
-    height: 32px;
-    background-color: var(--nano-bg-accent-color);
-    color: var(--nano-fg-inverse-color);
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 800;
-    font-size: 1.125rem;
-  }
-
-  .brand-title {
+.brand-title {
+    display: inline-block;
     font-size: 1.25rem;
     font-weight: 800;
     letter-spacing: -0.02em;
     color: var(--nano-fg-primary-color);
-  }
+    vertical-align: middle;
+    margin-left: 0.5rem;
+}
 
-  .nav-links {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-  }
+.nav-links {
+    text-align: right;
+}
 
-  .nav-links a:not(.btn) {
+.nav-links a:not(.btn) {
+    display: inline-block;
     text-decoration: none;
     font-weight: 600;
     font-size: 0.9375rem;
     color: var(--nano-fg-secondary-color);
-    transition: color 0.15s ease;
-  }
+    margin-right: 1.5rem;
+    vertical-align: middle;
+}
 
-  .nav-links a:not(.btn):hover {
+.nav-links a:not(.btn):hover {
     color: var(--nano-fg-primary-color);
-  }
+}
 
-  .hero-section {
+.hero-section {
     padding: 4.5rem 0 3rem;
-  }
+}
 
-  .hero-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.hero-container {
     text-align: center;
-  }
+}
 
-  .hero-badge {
+.hero-badge {
     margin-bottom: 1.5rem;
-  }
+}
 
-  .badge-dot {
+.badge-dot {
     color: var(--nano-border-color);
-  }
+    margin: 0 0.25rem;
+}
 
-  .hero-title {
+.hero-title {
     max-width: 800px;
-    margin-bottom: 1.25rem;
-  }
+    margin: 0 auto 1.25rem;
+}
 
-  .hero-subheadline {
+.hero-subheadline {
     max-width: 620px;
     font-size: 1.125rem;
     line-height: 1.6;
-    margin-bottom: 2.25rem;
-  }
+    margin: 0 auto 2.25rem;
+}
 
-  .hero-actions {
+.hero-actions {
     margin-bottom: 3.5rem;
-  }
+}
 
-  .hero-widget-slot {
+.hero-widget-slot {
     min-height: 380px;
-  }
+}
 
-  .features-section {
+.features-section {
     padding-bottom: 4.5rem;
-  }
+}
 
-  .features-grid {
+.features-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
     gap: 1.5rem;
-  }
+}
 
-  .feature-card h3 {
+.feature-card h3 {
     margin-bottom: 0.5rem;
     font-size: 1.25rem;
-  }
+}
 
-  .feature-card p {
+.feature-card p {
     font-size: 0.9375rem;
     line-height: 1.5;
     margin-bottom: 1.25rem;
-  }
+}
 
-  .card-widget-slot {
+.card-widget-slot {
     min-height: 200px;
-  }
+}
 
-  .footer {
-    margin-top: auto;
+.footer {
     padding: 2rem 0;
     border-top: 1px solid var(--nano-border-subtle-color);
-  }
+    text-align: center;
+}
 
-  .footer-inner p {
+.footer-text {
     font-size: 0.875rem;
     color: var(--nano-fg-muted-color);
-    text-align: center;
-  }
+}
+
+.footer-text a {
+    color: var(--nano-fg-primary-color);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
 </style>

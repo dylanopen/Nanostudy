@@ -17,6 +17,10 @@ export abstract class Question {
         return question;
     }
 
+    static async example(): Promise<Question | null> {
+        return Question.load("example-question");
+    }
+
     public hideAnswer(): void {
         this.markingEngine = undefined;
         this.answer = undefined;

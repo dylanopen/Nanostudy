@@ -4,14 +4,14 @@
 
 <h3>{question.prompt}</h3>
 
-{#if question.type === "simple"}
-<p>{question.answers}</p>
+{#if question.type === "basic"}
+<p>{question.answer.answers[0]}</p>
 {/if}
 
-{#if question.explanation}
+{#if question.answer.explanation}
 <details>
     <summary>View explanation</summary>
-    <p>{question.explanation}</p>
+    <p>{question.answer.explanation}</p>
 </details>
 {/if}
 
