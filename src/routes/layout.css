@@ -6,14 +6,16 @@
     --nano-bg-secondary-color: #F3EFEA;
     --nano-bg-accent-color: #143D30;
     --nano-bg-accent-hover: #1F5946;
-    --nano-bg-terracotta-color: #C86D51;
+    --nano-bg-positive-color: #2D6A4F;
+    --nano-bg-negative-color: #C86D51;
 
     --nano-fg-primary-color: #111E1A;
     --nano-fg-secondary-color: #3B4D45;
     --nano-fg-muted-color: #5C6E65;
     --nano-fg-inverse-color: #FFFFFF;
     --nano-fg-accent-color: #143D30;
-    --nano-fg-terracotta-color: #C86D51;
+    --nano-fg-positive-color: #2D6A4F;
+    --nano-fg-negative-color: #C86D51;
 
     --nano-border-color: #E3DCD1;
     --nano-border-subtle-color: #ECE7DF;
@@ -64,6 +66,12 @@ h2 {
     letter-spacing: -0.02em;
 }
 
+h3 {
+    font-size: clamp(1.25rem, 2.0vw, 1.75rem);
+    padding-bottom: 1rem;
+    letter-spacing: -0.02em;
+}
+
 p {
     margin: 0;
     color: var(--nano-fg-secondary-color);
@@ -73,7 +81,7 @@ a {
     color: inherit;
 }
 
-.btn {
+.text-input, .btn {
     display: inline-block;
     vertical-align: middle;
     border: 1px solid var(--nano-border-color);
@@ -81,9 +89,17 @@ a {
     background-color: var(--nano-bg-surface-color);
     text-decoration: none;
     font-weight: 600;
-    font-size: 0.9375rem;
+    font-size: 1rem;
     padding: 0.625rem 1.25rem;
     border-radius: 8px;
+    text-align: center;
+}
+
+.btn {
+    color: var(--nano-fg-primary-color);
+    background-color: var(--nano-bg-surface-color);
+    text-decoration: none;
+    padding: 0.625rem 1.25rem;
     cursor: pointer;
     text-align: center;
     transition: background-color 0.15s ease, border-color 0.15s ease;
@@ -110,10 +126,8 @@ a {
     border-radius: 10px;
 }
 
-.btn svg {
-    vertical-align: middle;
-    margin-left: 0.375rem;
-    display: inline-block;
+.text-input-accent {
+    border-color: var(--nano-bg-accent-color)
 }
 
 .badge {
@@ -144,6 +158,10 @@ a {
     padding: 1.5rem;
 }
 
+.card.tight {
+    padding: 0.75rem;
+}
+
 hr {
     border: none;
     border-top: 1px solid var(--nano-border-subtle-color);
@@ -159,3 +177,4 @@ hr {
     border-radius: 16px;
     overflow: hidden;
 }
+

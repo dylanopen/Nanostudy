@@ -8,6 +8,6 @@
     }
 </script>
 
-<input type="text" id="input-box" />
-<button onclick={submitInputBox}>Submit</button>
+<input type="text" id="input-box" class="text-input text-input-accent" />
+<button class="btn btn-accent" onclick={submitInputBox}>Submit</button>
 

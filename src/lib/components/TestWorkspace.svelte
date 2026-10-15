@@ -32,19 +32,20 @@
 
 {#if currentQuestionNumber <= questionIds.length}
 
-<p>Question {currentQuestionNumber} of {questionIds.length}</p>
-<hr/>
+<div class="card tight">Question {currentQuestionNumber} of {questionIds.length}</div>
+<br />
 
 {#if currentAnswerAttempt === null}
 <QuestionWorkspace question={currentQuestion} onSubmit={submitAnswer} />
 {:else}
 <AnswerFeedback answerAttempt={currentAnswerAttempt} />
 <div>
-    <button onclick={advanceQuestion}>Next Question</button>
+    <button class="btn" onclick={advanceQuestion}>Next Question</button>
 </div>
 {/if}
 
 {:else}
 <TestCompletionSummary lesson={lesson} results={questionAttempts} />
 {/if}
+
 

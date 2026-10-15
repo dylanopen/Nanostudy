@@ -5,25 +5,119 @@
     $inspect(answerAttempt);
 </script>
 
+<div class="feedback-card">
+    <div class="question-header">
+        <QuestionDisplay question={answerAttempt.question} />
+    </div>
 
-<div>
-    Question:
-    <QuestionDisplay question={answerAttempt.question} />
+    {#if answerAttempt.isCorrect}
+    <span class="status-title correct">Correct!</span>
+        <div class="status-card correct">
+            <span class="label">Answer</span>
+            <span class="status-detail">Answer: <strong>{answerAttempt.question.answer.answers[0]}</strong></span>
+        </div>
+    {:else}
+        <div class="status-title incorrect">Not quite right</div>
+        <div class="status-card incorrect">
+            <span class="label">Your answer</span>
+            <div class="status-detail user-attempt"><b>{answerAttempt.studentAnswer}</b></div>
+        </div>
+        <div class="info-card">
+            <span class="label">Correct answer</span>
+            <div class="status-detail"><b>{answerAttempt.question.answer.answers[0]}</b></div>
+        </div>
+    {/if}
+
+    {#if answerAttempt.question.answer.hint}
+        <div class="info-card">
+            <span class="label">Hint</span>
+            <p>{answerAttempt.question.answer.hint}</p>
+        </div>
+    {/if}
+
+    {#if answerAttempt.question.answer.explanation}
+        <div class="info-card">
+            <span class="label">Explanation</span>
+            <p>{answerAttempt.question.answer.explanation}</p>
+        </div>
+    {/if}
 </div>
 
-{#if answerAttempt.isCorrect}
-<div>Perfect!</div>
-<div>Answer: {answerAttempt.question.answer.answers[0]}</div>
-{:else}
-<div>Not quite right.</div>
-<div>Correct answer: {answerAttempt.question.answer.answers[0]}</div>
-<div>You answered: {answerAttempt.answerAttempt}</div>
-{/if}
+<style>
+    .feedback-card {
+        padding: 0.75rem;
+        border: 1px solid var(--nano-border-color);
+        border-radius: 8px;
+        background-color: var(--nano-bg-surface-color);
+        margin-bottom: 0.625rem;
+    }
 
-{#if answerAttempt.question.answer.hint}
-<div>Hint: {answerAttempt.question.answer.hint}</div>
-{/if}
-{#if answerAttempt.question.answer.explanation}
-<div>Explanation: {answerAttempt.question.answer.explanation}</div>
-{/if}
+    .question-header {
+        margin-bottom: 0.375rem;
+    }
 
+    .label {
+        display: block;
+        font-size: 0.6875rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: var(--nano-fg-muted-color);
+        margin-bottom: 0.125rem;
+    }
+
+    .correct {
+        color: var(--nano-fg-positive-color);
+    }
+
+    .status-card {
+        padding: 0.375rem 0.625rem;
+        border-radius: 6px;
+        border: 1px solid var(--nano-border-color);
+        margin-bottom: 0.375rem;
+    }
+
+    .status-card.correct {
+        background-color: color-mix(in srgb, var(--nano-bg-positive-color) 8%, transparent);
+        border-color: color-mix(in srgb, var(--nano-bg-positive-color) 25%, transparent);
+    }
+
+    .status-card.incorrect {
+        background-color: color-mix(in srgb, var(--nano-bg-negative-color) 8%, transparent);
+        border-color: color-mix(in srgb, var(--nano-bg-negative-color) 25%, transparent);
+        color: var(--nano-fg-negative-color);
+    }
+
+    .status-title {
+        font-weight: 700;
+        font-size: 0.8125rem;
+        margin-right: 0.5rem;
+    }
+
+    .status-detail {
+        font-size: 0.8125rem;
+        color: var(--nano-fg-primary-color);
+        display: inline-block;
+    }
+
+    .user-attempt {
+        display: block;
+        margin-top: 0.125rem;
+        color: var(--nano-fg-secondary-color);
+    }
+
+    .info-card {
+        background-color: var(--nano-bg-secondary-color);
+        border: 1px solid var(--nano-border-subtle-color);
+        border-radius: 6px;
+        padding: 0.375rem 0.625rem;
+        margin-top: 0.375rem;
+    }
+
+    .info-card p {
+        margin: 0;
+        font-size: 0.8125rem;
+        line-height: 1.35;
+        color: var(--nano-fg-primary-color);
+    }
+</style>

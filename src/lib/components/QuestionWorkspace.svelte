@@ -17,8 +17,9 @@
     }
 </script>
 
+<div class="card">
 <QuestionDisplay {question} />
 <RawInput submit={submitAnswer} />
-<hr/>
+</div>
 
 

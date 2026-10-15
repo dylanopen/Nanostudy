@@ -5,18 +5,6 @@ import TestWorkspace from "$lib/components/TestWorkspace.svelte";
 </script>
 
 <div class="page-wrapper">
-    <header class="header">
-        <div class="container header-inner">
-            <a class="btn btn-accent" href="/">Nanostudy</a>
-
-            <nav class="nav-links">
-                <a href="#features">Features</a>
-                <a href="#courses">Courses</a>
-                <a href="/login" class="btn">Sign In</a>
-            </nav>
-        </div>
-    </header>
-
     <main>
         <section class="hero-section">
             <div class="container hero-container">
@@ -37,7 +25,7 @@ import TestWorkspace from "$lib/components/TestWorkspace.svelte";
                     </a>
                 </div>
 
-                <h3>Want to try it yourself?</h3>
+                <h3>Try it yourself, right here.</h3>
                 <div class="widget-slot hero-widget-slot">
                     <TestWorkspace questionIds={["example-question"]} />
                 </div>
@@ -46,8 +34,6 @@ import TestWorkspace from "$lib/components/TestWorkspace.svelte";
 
         <section class="features-section" id="features">
             <div class="container">
-                <hr />
-
                 <div class="features-grid">
                     <div class="card feature-card">
                         <h3>Stop repeating the same mistakes</h3>
@@ -88,7 +74,7 @@ import TestWorkspace from "$lib/components/TestWorkspace.svelte";
     <footer class="footer">
         <div class="container">
             <p class="footer-text">
-                © 2026 Nanostudy • Built for students, by a student. Coded & curated by <a href="https://dylancode.dev" target="_blank" rel="noopener">Dylan Rogers</a>.
+                © 2026 Nanostudy • Built for students, by a student. Curated and <a href="https://github.com/dylanopen/Nanostudy">coded in the open</a> by <a href="https://dylancode.dev" target="_blank" rel="noopener">Dylan Rogers</a>.
             </p>
         </div>
     </footer>
