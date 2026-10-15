@@ -14,7 +14,7 @@
     <span class="status-title correct">Correct!</span>
         <div class="status-card correct">
             <span class="label">Answer</span>
-            <span class="status-detail">Answer: <strong>{answerAttempt.question.answer.answers[0]}</strong></span>
+            <span class="status-detail"><b>{answerAttempt.question.answer.answers[0]}</b></span>
         </div>
     {:else}
         <div class="status-title incorrect">Not quite right</div>

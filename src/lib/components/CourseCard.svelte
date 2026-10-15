@@ -4,11 +4,11 @@
 </script>
 
 <a href="/course/{course.id}">
-    <div class="border-solid border-lime-400 outline-1">
+    <div class="card darken-on-hover">
         <Badge color=darkorange text={course.level} />
         <Badge color=lightgreen text={course.examBoard} />
         <br/>
-        <h3>{course.title}</h3>
+        <div class="course-title">{course.title}</div>
     </div>
 </a>
 
@@ -17,9 +17,14 @@ div, h3 {
     display: inline-block;
 }
 
-div {
-    margin: 10px;
-    padding: 5px;
+.card {
+    margin: 0.5rem;
 }
+
+.course-title {
+    font-size: 1.2rem;
+}
+
+
 </style>
 

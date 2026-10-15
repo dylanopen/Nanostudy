@@ -178,3 +178,33 @@ hr {
     overflow: hidden;
 }
 
+.content {
+    padding: 1rem;
+}
+
+.darken-on-hover {
+    transition: filter 0.2s ease-in-out;
+}
+
+.darken-on-hover:hover {
+    filter: brightness(92.5%);
+}
+
+.no-border {
+    border: none;
+}
+
+.no-margin {
+    margin: none;
+}
+
+.btn-link {
+    margin: none;
+    border: none;
+    background-color: #fff0;
+}
+
+.brand {
+    font-weight: 600;
+}
+

@@ -10,5 +10,7 @@
 
 <Header/>
 
-{@render children()}
+<div class="content">
+    {@render children()}
+</div>
 
