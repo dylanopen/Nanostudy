@@ -13,9 +13,9 @@
     let correctPercentage = $derived(Math.round((correctCount / results.length) * 100));
 </script>
 
-<div class="results-container">
+<div class="main-content">
     <div class="summary-card">
-        <h2>Test complete!</h2>
+        <h3>Test complete!</h3>
         <p class="score">You answered <b>{correctCount}</b> out of <b>{results.length}</b> questions correctly (<b>{correctPercentage}%</b>).</p>
         <p class="subtext">Here's a breakdown of what went well and the topics to work on next:</p>
     </div>
@@ -32,17 +32,10 @@
 </div>
 
 <style>
-    .results-container {
-        max-width: 680px;
-        margin: 0 auto;
-        padding: 1rem 0;
-    }
-
     .summary-card {
         text-align: center;
         margin-bottom: 1.25rem;
         padding-bottom: 1rem;
-        border-bottom: 1px solid var(--nano-border-subtle-color);
     }
 
     .score {
@@ -54,6 +47,7 @@
     .subtext {
         font-size: 0.875rem;
         color: var(--nano-fg-secondary-color);
+        padding-bottom: 0rem;
     }
 
     .feedback-list {

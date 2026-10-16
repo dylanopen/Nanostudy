@@ -1,5 +1,11 @@
 <script lang="ts">
-    let { lesson } = $props();
+    let { lesson, classes } = $props();
 </script>
 
-<span class="m-3"><a href="/lesson/{lesson.id}">{lesson.title}</a></span>
+<a class="btn btn-link {classes}" href="/lesson/{lesson.id}">{lesson.title}</a>
+
+<style>
+a {
+    text-align: left;
+}
+</style>

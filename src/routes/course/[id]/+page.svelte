@@ -7,7 +7,7 @@
 <CourseCard course={data.course} />
 <hr/>
 
-<h2>Topics & lessons</h2>
+<h2>Explore this curriculum's lessons</h2>
 
 {#each data.topics as topic}
 <br/>

@@ -2,6 +2,7 @@
 import './layout.css';
 import Badge from "$lib/components/Badge.svelte";
 import TestWorkspace from "$lib/components/TestWorkspace.svelte";
+import { hasLaunched } from "$lib/data/countdown.ts"
 </script>
 
 <div class="page-wrapper">
@@ -20,9 +21,13 @@ import TestWorkspace from "$lib/components/TestWorkspace.svelte";
                 </p>
 
                 <div class="hero-actions">
+                    {#if hasLaunched()}
                     <a href="/courses" class="btn btn-accent btn-lg">
                         <span>Start Studying Now ➜</span>
                     </a>
+                    {:else}
+                        <span class="btn btn-accent btn-lg">Nanostudy will be launching 3rd January 2027</span>
+                    {/if}
                 </div>
 
                 <h3>Try it yourself, right here.</h3>

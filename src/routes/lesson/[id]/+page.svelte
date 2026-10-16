@@ -8,30 +8,47 @@
     let { data } = $props();
 </script>
 
-<h2>{data.lesson.title}</h2>
+    <h3 class="lesson-title">{data.lesson.title}</h3>
 
-<TestButton lesson={data.lesson} />
-<LearnButton lesson={data.lesson} />
+<div class="lesson-container card">
 
-{#if data.prerequisites.length}
-<hr/>
-<h3>Prerequisites</h3>
-<span class="subtext">We recommend practising these topics before attempting <i>{data.lesson.title.toLowerCase()}</i>:</span>
-<br/>
+    <div class="center">
+        <LearnButton lesson={data.lesson} />
+        <TestButton lesson={data.lesson} />
+    </div>
 
-{#each data.prerequisites as prerequisite}
-<LessonCard lesson={prerequisite} />
-{/each}
-{/if}
+    {#if data.prerequisites.length}
+    <hr/>
+    <h3>Prerequisites</h3>
+    <span class="subtext">We recommend practising these topics before attempting {data.lesson.title.toLowerCase()}:</span>
+    <br/>
 
-<hr/>
+    {#each data.prerequisites as prerequisite}
+    <LessonCard lesson={prerequisite} />
+    {/each}
+    {/if}
 
-<ReadContentDisplay readContent={data.lesson.readContent} />
-<hr />
+    <hr/>
 
-<h2>Lesson content</h2>
+    <ReadContentDisplay readContent={data.lesson.readContent} />
+    <hr />
 
-{#each data.questions as question}
-<QuestionPreview {question} />
-{/each}
+    <h3>Lesson content</h3>
+    <p>You may want to try the Test or Learn mode <i>before</i> reading this - as the content below may contain 'spoilers' about the questions.</p>
+
+    {#each data.questions as question}
+    <QuestionPreview {question} />
+    {/each}
+
+</div>
+
+<style>
+.lesson-container {
+    padding: 1rem;
+}
+
+.lesson-title {
+    width: auto;
+}
+</style>
 

@@ -41,11 +41,20 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
-.container {
+.content {
     width: 100%;
-    max-width: 1120px;
     margin: 0 auto;
-    padding: 0 1.5rem;
+    max-width: 1120px;
+    padding: 1rem 1.5rem;
+}
+
+.main-content {
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 1rem;
+    border-color: var(--nano-border-color);
+    margin-top: 1rem;
+    padding: 0.75rem;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -176,6 +185,7 @@ hr {
     border: 1px solid var(--nano-border-color);
     border-radius: 16px;
     overflow: hidden;
+    padding: 0.4rem;
 }
 
 .content {
@@ -198,6 +208,10 @@ hr {
     margin: none;
 }
 
+.min-padding {
+    padding: 0.25rem 0.4rem;
+}
+
 .btn-link {
     margin: none;
     border: none;
@@ -206,5 +220,22 @@ hr {
 
 .brand {
     font-weight: 600;
+}
+
+.block {
+    display: block;
+}
+
+.inline-block {
+    display: inline-block;
+}
+
+.align-text-left {
+    text-align: left;
+}
+
+.center {
+    text-align: center;
+    margin: auto;
 }
 

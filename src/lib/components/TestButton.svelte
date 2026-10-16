@@ -2,5 +2,5 @@
     let { lesson } = $props();
 </script>
 
-<a href="/learn/{lesson.id}"><button>Learn</button></a>
+<a class="btn" href="/test/{lesson.id}">Test</a>
 

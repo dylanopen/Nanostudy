@@ -13,7 +13,7 @@
 </a>
 
 <style>
-div, h3 {
+div {
     display: inline-block;
 }
 
@@ -24,7 +24,5 @@ div, h3 {
 .course-title {
     font-size: 1.2rem;
 }
-
-
 </style>
 
