@@ -4,7 +4,16 @@
     import TestWorkspace from "$lib/components/TestWorkspace.svelte";
 </script>
 
-<h2>Test: {data.lesson.title}</h2>
+<header class="title-header">
+    <h2>{data.lesson.title}</h2>
+</header>
 
 <TestWorkspace lesson={data.lesson} questionIds={data.questionIds} />
+
+<style>
+.title-header {
+    text-align: center;
+    margin: 2rem 0;
+}
+</style>
 

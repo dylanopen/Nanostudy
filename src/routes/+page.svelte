@@ -9,8 +9,6 @@ import { hasLaunched } from "$lib/data/countdown.ts"
     <main>
         <section class="hero-section">
             <div class="container hero-container">
-                <Badge color="#dad7d3" text="A-Level Mathematics & Further Mathematics for AQA, Edexcel & OCR" />
-                <br /><br />
 
                 <h1 class="hero-title">
                     Built to save <span class="highlight-underline">every mark</span>
@@ -30,9 +28,9 @@ import { hasLaunched } from "$lib/data/countdown.ts"
                     {/if}
                 </div>
 
-                <h3>Try it yourself, right here.</h3>
-                <div class="widget-slot hero-widget-slot">
-                    <TestWorkspace questionIds={["example-question"]} />
+                <div class="tryit-widget-slot">
+                    <h3>Try a practice question</h3>
+                    <TestWorkspace questionIds={["example-question"]} hideMetadata=true />
                 </div>
             </div>
         </section>
@@ -158,9 +156,6 @@ import { hasLaunched } from "$lib/data/countdown.ts"
     margin-bottom: 3.5rem;
 }
 
-.hero-widget-slot {
-    min-height: 380px;
-}
 
 .features-section {
     padding-bottom: 4.5rem;
@@ -203,5 +198,9 @@ import { hasLaunched } from "$lib/data/countdown.ts"
     font-weight: 600;
     text-decoration: underline;
     text-underline-offset: 3px;
+}
+
+.tryit-widget-slot {
+    margin: 3rem 0;
 }
 </style>

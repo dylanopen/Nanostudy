@@ -4,6 +4,13 @@
     import favicon from '$lib/assets/favicon.svg';
 
     let { children } = $props();
+
+    $effect(() => {
+        const isLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+        //const theme = isLight ? 'light-mode' : 'dark-mode';
+        const theme = "light-mode"; // Currently, the dark mode doesn't look particularly good. I'm going to use light mode only for now.
+        document.documentElement.classList.add(theme);
+    });
 </script>
 
 <svelte:head><link rel="icon" href={favicon} /></svelte:head>

@@ -1,5 +1,5 @@
 <script lang="ts">
-    let { questionIds, lesson } = $props();
+    let { questionIds, lesson, hideMetadata } = $props();
 
     import RawInput from "$lib/components/RawInput.svelte"
     import QuestionWorkspace from "$lib/components/QuestionWorkspace.svelte";
@@ -32,8 +32,10 @@
 
 {#if currentQuestionNumber <= questionIds.length}
 
+{#if !hideMetadata}
 <div class="card tight">Question {currentQuestionNumber} of {questionIds.length}</div>
 <br />
+{/if}
 
 {#if currentAnswerAttempt === null}
 <QuestionWorkspace question={currentQuestion} onSubmit={submitAnswer} />

@@ -22,4 +22,3 @@
 <RawInput submit={submitAnswer} />
 </div>
 
-

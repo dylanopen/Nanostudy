@@ -1,6 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,700&display=swap');
 
 :root {
+    --nano-font-primary: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+}
+
+:root.light-mode {
+    color-scheme: light;
+
     --nano-bg-primary-color: #FAF8F5;
     --nano-bg-surface-color: #FFFFFF;
     --nano-bg-secondary-color: #F3EFEA;
@@ -23,8 +29,6 @@
 
     --nano-highlight-gold: #D99B26;
     --nano-dot-grid-color: #E2DBD0;
-
-    --nano-font-primary: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
 }
 
 *, *::before, *::after {
@@ -224,6 +228,11 @@ hr {
 
 .block {
     display: block;
+}
+
+.fill-block {
+    display: block;
+    width: 100%;
 }
 
 .inline-block {
