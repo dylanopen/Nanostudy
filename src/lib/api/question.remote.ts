@@ -1,7 +1,7 @@
 import { query } from '$app/server';
 import { db } from '$lib/server/db';
-import { basic_questions } from '$lib/server/db/schema';
-import { Answer, BasicQuestion, Question, AnswerSubmissionResult } from '$lib/types/question';
+import { basic_questions, multistep_questions, multistep_question_parts } from '$lib/server/db/schema';
+import { Answer, BasicQuestion, Question, AnswerSubmissionResult, MultistepQuestion } from '$lib/types/question';
 import { sql } from 'drizzle-orm';
 import * as v from 'valibot';
 import { error } from '@sveltejs/kit';
@@ -27,7 +27,39 @@ export const fetchBasicQuestionById = query(
             new Answer(bq.answers, bq.hint, bq.explanation),
         );
     }
-)
+);
+
+export const fetchMultistepQuestionById = query(
+    v.object({
+        questionId: v.string(),
+    }),
+    async ({ questionId }): Promise<MultistepQuestion | null> => {
+        const multiStepData = await db.execute<typeof multistep_questions.$inferSelect>(sql`
+            SELECT *
+            FROM ${multistep_questions}
+            WHERE ${multistep_questions.id} = ${questionId}
+        `);
+        const ms = multiStepData[0];
+        if (!ms) {
+            return null;
+        }
+
+        const partsData = await db.execute<typeof multistep_question_parts.$inferSelect>(sql`
+            SELECT *
+            FROM ${multistep_question_parts}
+            WHERE ${multistep_question_parts.multistep_id} = ${questionId}
+            ORDER BY ${multistep_question_parts.index} ASC
+        `);
+
+        const stepQuestions = await Promise.all(
+            partsData.map((part) => Question.load(part.part_question_id))
+        );
+
+        const steps = stepQuestions.filter((q): q is Question => q !== null);
+
+        return new MultistepQuestion(ms.id, ms.prompt, steps);
+    }
+);
 
 export const getQuestion = query(
     v.object({
@@ -57,5 +89,4 @@ export const checkAnswer = query(
 
         return new AnswerSubmissionResult(question, isCorrect, answerAttempt);
     }
-)
-
+);

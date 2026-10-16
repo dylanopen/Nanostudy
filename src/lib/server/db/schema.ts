@@ -53,3 +53,15 @@ export const basic_questions = pgTable("basic_questions", {
     hint: text(),
     explanation: text(),
 }).enableRLS();
+
+export const multistep_questions = pgTable("multistep_questions", {
+    id: text().primaryKey(),
+    prompt: text().notNull(),
+}).enableRLS();
+
+export const multistep_question_parts = pgTable("multistep_question_parts", {
+    multistep_id: text().notNull(),
+    part_question_id: text().notNull(),
+    index: integer().notNull(),
+}).enableRLS();
+

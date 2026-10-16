@@ -1,4 +1,4 @@
-import { fetchBasicQuestionById } from "$lib/api/question.remote";
+import { fetchBasicQuestionById, fetchMultistepQuestionById } from "$lib/api/question.remote";
 
 export abstract class Question {
     public abstract readonly type: string;
@@ -10,11 +10,12 @@ export abstract class Question {
     ) {}
 
     static async load(id: string): Promise<Question | null> {
-        // TODO: support more question types
         let question = await BasicQuestion.load(id);
-        if (!question) return null;
+        if (question) return question;
+        question = await MultistepQuestion.load(id);
+        if (question) return question;
 
-        return question;
+        return null;
     }
 
     static async example(): Promise<Question | null> {
@@ -55,11 +56,28 @@ export class BasicQuestion extends Question {
         answer: Answer
     ) {
         super(id, prompt, answer, new ExactMarkingEngine());
-        this.answer = answer;
     }
 
     static async load(id: string): Promise<BasicQuestion | null> {
         return await fetchBasicQuestionById({ questionId: id });
+    }
+}
+
+export class MultistepQuestion extends Question {
+    readonly type: string = "multistep";
+    public steps: Question[];
+
+    constructor(
+        id: string,
+        prompt: string,
+        steps: Question[],
+    ) {
+        super(id, prompt, undefined, undefined);
+        this.steps = steps;
+    }
+
+    static async load(id: string): Promise<MultistepQuestion | null> {
+        return await fetchMultistepQuestionById({ questionId: id });
     }
 }
 

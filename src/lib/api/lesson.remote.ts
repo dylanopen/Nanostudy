@@ -2,8 +2,9 @@ import { query } from '$app/server';
 import { db } from '$lib/server/db';
 import { lesson_questions, lessons, basic_questions } from '$lib/server/db/schema';
 import { Lesson } from '$lib/types/lesson';
-import { Answer, BasicQuestion, type Question } from '$lib/types/question';
+import { Answer, BasicQuestion, Question } from '$lib/types/question';
 import { sql, inArray } from 'drizzle-orm';
+import { error } from "@sveltejs/kit"
 import * as v from 'valibot';
 
 export const fetchLessonById = query(
@@ -34,19 +35,17 @@ export const fetchQuestionsByLessonId = query(
         lessonId: v.string(),
     }),
     async ({ lessonId }): Promise<Question[]> => {
-        const basicQuestionsData = await db.execute<typeof basic_questions.$inferSelect>(sql`
-            SELECT bq.*
+        const questionIds = await db.execute<{question_id: string}>(sql`
+            SELECT lq.question_id
             FROM ${lesson_questions} lq
-            INNER JOIN ${basic_questions} bq ON lq.question_id = bq.id
             WHERE lq.lesson_id = ${lessonId}
-            AND lq.question_type = 'basic'
         `);
 
-        return basicQuestionsData.map((bq) => new BasicQuestion(
-            bq.id,
-            bq.prompt,
-            new Answer(bq.answers, bq.hint, bq.explanation),
-        ));
+        return await Promise.all(questionIds.map(async (bq) => {
+            let question = await Question.load(bq.question_id);
+            if (!question) error(500, "This lesson in the database contains an entry which points to a non-existent question. Please report this to report@nanostudy.co.uk");
+            return question;
+        }));
     }
 );
 
