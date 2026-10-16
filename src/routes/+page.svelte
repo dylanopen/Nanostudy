@@ -26,7 +26,7 @@ import { hasLaunched } from "$lib/data/countdown.ts"
                         <span>Start Studying Now ➜</span>
                     </a>
                     {:else}
-                        <span class="btn btn-accent btn-lg">Nanostudy will be launching 3rd January 2027</span>
+                        <span class="btn btn-accent btn-lg">Nanostudy will launch on the 3rd of January, 2027</span>
                     {/if}
                 </div>
 
