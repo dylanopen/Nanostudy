@@ -21,6 +21,7 @@
     h3 {
         font-size: 1.125rem;
         padding-bottom: 0.375rem;
+        font-weight: 300;
     }
 
     .card {

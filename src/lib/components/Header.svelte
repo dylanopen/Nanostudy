@@ -1,5 +1,5 @@
 <header class="header">
-    <a href="/" class="btn btn-link">Nanostudy</a>
+    <a href="/" class="btn btn-link brand">Nanostudy</a>
     <a href="/courses" class="btn btn-link">Discover topics</a>
     <a href="/statistics" class="btn btn-link">My progress</a>
 </header>

@@ -96,6 +96,7 @@
         font-weight: 700;
         font-size: 0.8125rem;
         margin-right: 0.5rem;
+        margin-left: 0.15rem;
     }
 
     .status-detail {
