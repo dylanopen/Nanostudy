@@ -4,7 +4,7 @@
     --nano-font-primary: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
 }
 
-:root.light-mode {
+:root {
     color-scheme: light;
 
     --nano-bg-primary-color: #FAF8F5;
@@ -29,6 +29,43 @@
 
     --nano-highlight-gold: #D99B26;
     --nano-dot-grid-color: #E2DBD0;
+}
+
+:root.dark-mode {                                                                 
+    color-scheme: dark;
+
+    /* Backgrounds: Deep obsidian canvas with clean, distinctly lifted surfaces */
+    --nano-bg-primary-color: #0A0A0A;    /* Absolute rich dark canvas to create separation */
+    --nano-bg-surface-color: #131312;    /* Crisp, matte dark cards that actually pop off the canvas */
+    --nano-bg-secondary-color: #1B1B1A;  /* Defined inner boxes (like your "Try it yourself" zone) */
+    
+    /* Brand Accents: Rich, intentional forest green that doesn't get lost */
+    --nano-bg-accent-color: #123C30;     /* Slightly enriched forest green so it looks crisp on dark panels */
+    --nano-bg-accent-hover: #184E3F;     /* Responsive hover state */
+    --nano-bg-positive-color: #14382B;   /* Solid success state background */
+    --nano-bg-negative-color: #3D1F1A;   /* Solid error state background */
+                                                                                   
+    /* Typography: High-contrast editorial weights (No more washed-out text) */
+    --nano-fg-primary-color: #FFFFFF;    /* Pure, brilliant white for headers so they punch through */
+    --nano-fg-secondary-color: #A6A69E;  /* Clean, warm silver-grey for highly legible descriptions */
+    --nano-fg-muted-color: #60605A;      /* Reclaimed visibility for footers and secondary micro-text */
+    --nano-fg-inverse-color: #FFFFFF;    /* Keeps text inside your green pills perfectly crisp and white */
+    
+    /* Fine-line Typography Accents */
+    --nano-fg-accent-color: #83B39F;     /* Subtle sage green for standalone text links */
+    --nano-fg-positive-color: #6BB392;   
+    --nano-fg-negative-color: #D6826B;   
+                                                                                   
+    /* The Secret Sauce: Crisp, structural framing borders */
+    --nano-border-color: #242422;        /* Sharp, clean outlines to rebuild your gorgeous light-mode boxes */
+    --nano-border-subtle-color: #1A1A19; /* Inner dividers */
+    --nano-border-accent-color: #123C30; 
+                                                                                   
+    /* Utilities & Grids */
+    --nano-highlight-gold: #D99B26;      /* Your signature gold—now acts as a premium focal point */
+    --nano-dot-grid-color: #1A1A19;      
+                                                                                   
+    --nano-font-primary: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
 }
 
 *, *::before, *::after {
@@ -248,3 +285,45 @@ hr {
     margin: auto;
 }
 
+/* Shared Question Card Layout */
+.question-card {
+    margin: 0.7rem 0;
+}
+
+.question-card h3 {
+    font-size: 1.125rem;
+    font-weight: 300;
+    padding-bottom: 0.375rem;
+}
+
+.question-card .answer-text {
+    font-weight: 600;
+    color: var(--nano-fg-primary-color);
+}
+
+/* Shared Explanation Dropdown */
+.question-card details {
+    margin-top: 0.75rem;
+    padding: 0.5rem 0.75rem;
+    background-color: var(--nano-bg-secondary-color);
+    border: 1px solid var(--nano-border-subtle-color);
+    border-radius: 8px;
+}
+
+.question-card summary {
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--nano-fg-accent-color);
+}
+
+.question-card details p {
+    margin-top: 0.375rem;
+    font-size: 0.875rem;
+}
+
+.question-prompt {
+    font-size: 1.25rem;
+    padding-left: 0.25rem;
+    padding-bottom: 0.75rem;
+}

@@ -30,7 +30,7 @@ import { hasLaunched } from "$lib/data/countdown.ts"
 
                 <div class="tryit-widget-slot">
                     <h3>Try a practice question</h3>
-                    <TestWorkspace questionIds={["example-question"]} hideMetadata=true />
+                    <TestWorkspace questionIds={["example-bidmas"]} hideMetadata=true />
                 </div>
             </div>
         </section>

@@ -72,7 +72,8 @@ export class MultistepQuestion extends Question {
         prompt: string,
         steps: Question[],
     ) {
-        super(id, prompt, undefined, undefined);
+        let answer = steps.length > 0 ? steps[steps.length - 1].answer : undefined;
+        super(id, prompt, answer, undefined);
         this.steps = steps;
     }
 
@@ -85,7 +86,8 @@ export class AnswerSubmissionResult {
     constructor(
         public question: Question,
         public isCorrect: boolean,
-        public studentAnswer: string,
+        public studentAnswer: string | undefined,
+        public steps: AnswerSubmissionResult[] | undefined = undefined,
     ) {}
 }
 

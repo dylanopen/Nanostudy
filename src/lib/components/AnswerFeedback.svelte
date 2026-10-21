@@ -1,8 +1,21 @@
 <script lang="ts">
+    import QuestionDisplay from "$lib/components/QuestionDisplay.svelte";
+
     const { answerAttempt } = $props();
 
-    import QuestionDisplay from "$lib/components/QuestionDisplay.svelte";
-    $inspect(answerAttempt);
+    // Recursively retrieve answer from single-step question or last step of multi-step
+    function getCorrectAnswer(attempt: typeof answerAttempt): string | undefined {
+        if (attempt?.question?.answer?.answers?.[0]) {
+            return attempt.question.answer.answers[0];
+        }
+        if (attempt?.steps?.length) {
+            return getCorrectAnswer(attempt.steps[attempt.steps.length - 1]);
+        }
+        return undefined;
+    }
+
+    const correctAnswer = $derived(getCorrectAnswer(answerAttempt));
+    const isMultiStep = $derived(Boolean(answerAttempt.steps?.length));
 </script>
 
 <div class="feedback-card">
@@ -11,34 +24,51 @@
     </div>
 
     {#if answerAttempt.isCorrect}
-    <span class="status-title correct">Correct!</span>
-        <div class="status-card correct">
-            <span class="label">Answer</span>
-            <span class="status-detail"><b>{answerAttempt.question.answer.answers[0]}</b></span>
-        </div>
+        <span class="status-title correct">Correct!</span>
+        {#if correctAnswer}
+            <div class="status-card correct">
+                <span class="label">{isMultiStep ? 'Final Answer' : 'Answer'}</span>
+                <span class="status-detail"><b>{correctAnswer}</b></span>
+            </div>
+        {/if}
     {:else}
         <div class="status-title incorrect">Not quite right</div>
-        <div class="status-card incorrect">
-            <span class="label">Your answer</span>
-            <div class="status-detail user-attempt"><b>{answerAttempt.studentAnswer}</b></div>
-        </div>
-        <div class="info-card">
-            <span class="label">Correct answer</span>
-            <div class="status-detail"><b>{answerAttempt.question.answer.answers[0]}</b></div>
-        </div>
+        
+        {#if answerAttempt.studentAnswer}
+            <div class="status-card incorrect">
+                <span class="label">Your answer</span>
+                <div class="status-detail user-attempt"><b>{answerAttempt.studentAnswer}</b></div>
+            </div>
+        {/if}
+
+        {#if correctAnswer}
+            <div class="info-card">
+                <span class="label">{isMultiStep ? 'Final Correct Answer' : 'Correct answer'}</span>
+                <div class="status-detail"><b>{correctAnswer}</b></div>
+            </div>
+        {/if}
     {/if}
 
-    {#if answerAttempt.question.answer.hint}
+    {#if answerAttempt.question?.answer?.hint}
         <div class="info-card">
             <span class="label">Hint</span>
             <p>{answerAttempt.question.answer.hint}</p>
         </div>
     {/if}
 
-    {#if answerAttempt.question.answer.explanation}
+    {#if answerAttempt.question?.answer?.explanation}
         <div class="info-card">
             <span class="label">Explanation</span>
             <p>{answerAttempt.question.answer.explanation}</p>
+        </div>
+    {/if}
+
+    {#if isMultiStep}
+        <div class="steps-container">
+            <span class="label steps-label">Steps breakdown</span>
+            {#each answerAttempt.steps as step}
+                <svelte:self answerAttempt={step} />
+            {/each}
         </div>
     {/if}
 </div>
@@ -71,7 +101,6 @@
     }
 
     .incorrect {
-        color: var(--nano-fg-positive-color);
         color: var(--nano-fg-negative-color);
     }
 
@@ -124,5 +153,15 @@
         font-size: 0.8125rem;
         line-height: 1.35;
         color: var(--nano-fg-primary-color);
+    }
+
+    .steps-container {
+        margin-top: 0.625rem;
+        padding-left: 0.625rem;
+        border-left: 2px solid var(--nano-border-color);
+    }
+
+    .steps-label {
+        margin-bottom: 0.375rem;
     }
 </style>

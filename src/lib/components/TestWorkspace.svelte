@@ -15,8 +15,14 @@
 
     let currentAnswerAttempt = $state(null);
 
-    $effect(async () => {
-        currentQuestion = await getQuestion({ questionId: currentQuestionId });
+    $effect(() => {
+        const id = currentQuestionId;
+
+        if (!id) return;
+
+        getQuestion({ questionId: id }).then((res) => {
+            currentQuestion = res;
+        });
     });
 
     async function submitAnswer(value) {
@@ -38,7 +44,7 @@
 {/if}
 
 {#if currentAnswerAttempt === null}
-<QuestionWorkspace question={currentQuestion} onSubmit={submitAnswer} />
+<QuestionWorkspace question={currentQuestion} submit={submitAnswer} />
 {:else}
 <AnswerFeedback answerAttempt={currentAnswerAttempt} />
 <div>

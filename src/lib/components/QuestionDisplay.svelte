@@ -1,13 +1,18 @@
 <script lang="ts">
-    let { question, onSubmit } = $props();
+    let { question } = $props();
+
+    import BasicQuestionDisplay from "$lib/components/BasicQuestionDisplay.svelte";
+    import MultistepQuestionDisplay from "$lib/components/MultistepQuestionDisplay.svelte";
 </script>
 
-<div class="question-prompt">{question.prompt}</div>
+<div class="question-prompt">
 
-<style>
-.question-prompt {
-    font-size: 1.25rem;
-    padding: 0.75rem;
-}
-</style>
+{#if question.type === "basic"}
+    <BasicQuestionDisplay {question} />
+{:else if question.type === "multistep"}
+    <MultistepQuestionDisplay {question} />
+{:else}
+    <div>Unsupported question type: {question.type}</div>
+{/if}
 
+</div>

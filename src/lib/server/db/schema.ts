@@ -36,12 +36,9 @@ export const topic_lessons = pgTable("topic_lessons", {
     }),
 ]).enableRLS();
 
-export const question_types = pgEnum("question_types", ["basic", "definition", "problem"]);
-
 export const lesson_questions = pgTable("lesson_questions", {
     lesson_id: text().notNull(),
     question_id: text().notNull(),
-    question_type: question_types().notNull(),
 }, (table) => [
     primaryKey({ columns: [table.lesson_id, table.question_id] }),
 ]).enableRLS();
