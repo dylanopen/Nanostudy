@@ -4,11 +4,14 @@
     import LearnButton from "$lib/components/LearnButton.svelte";
     import TestButton from "$lib/components/TestButton.svelte";
     import ReadContentDisplay from "$lib/components/ReadContentDisplay.svelte";
+    import MathsRenderer from "$lib/components/MathsRenderer.svelte";
     
     let { data } = $props();
 </script>
 
-    <h3 class="lesson-title">{data.lesson.title}</h3>
+<h3 class="lesson-title">{data.lesson.title}</h3>
+
+<MathsRenderer>
 
 <div class="lesson-container card">
 
@@ -41,6 +44,8 @@
     {/each}
 
 </div>
+
+</MathsRenderer>
 
 <style>
 .lesson-container {

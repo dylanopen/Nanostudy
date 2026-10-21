@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 import './layout.css';
 import Badge from "$lib/components/Badge.svelte";
 import TestWorkspace from "$lib/components/TestWorkspace.svelte";
