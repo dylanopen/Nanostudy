@@ -28,15 +28,15 @@
         currentStepIndex++;
     }
 
-    async function finishQuestion() {
-        let result = new AnswerSubmissionResult(
-            question,
-            answers.every(a => a.isCorrect),
-            undefined,
-            answers,
-        );
-        submit(result);
-    }
+async function finishQuestion() {
+    let result = new AnswerSubmissionResult(
+        $state.snapshot(question),
+        answers.every(a => a.isCorrect),
+        undefined,
+        $state.snapshot(answers)
+    );
+    submit(result);
+}
 </script>
 
 {#each question.steps.slice(0, currentStepIndex-1) as step, stepIndex}

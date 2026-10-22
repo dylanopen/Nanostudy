@@ -20,5 +20,8 @@ export default defineConfig({
 
             adapter: adapter()
         })
-    ]
+    ],
+    ssr: {
+        noExternal: ['katex']
+    }
 });

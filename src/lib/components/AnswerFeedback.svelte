@@ -3,7 +3,6 @@
 
     const { answerAttempt } = $props();
 
-    // Recursively retrieve answer from single-step question or last step of multi-step
     function getCorrectAnswer(attempt: typeof answerAttempt): string | undefined {
         if (attempt?.question?.answer?.answers?.[0]) {
             return attempt.question.answer.answers[0];
@@ -17,6 +16,8 @@
     const correctAnswer = $derived(getCorrectAnswer(answerAttempt));
     const isMultiStep = $derived(Boolean(answerAttempt.steps?.length));
 </script>
+
+Some answer feedback is showing...
 
 <div class="feedback-card">
     <div class="question-header">

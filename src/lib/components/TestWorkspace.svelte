@@ -5,6 +5,7 @@
     import QuestionWorkspace from "$lib/components/QuestionWorkspace.svelte";
     import AnswerFeedback from "$lib/components/AnswerFeedback.svelte";
     import TestCompletionSummary from "$lib/components/TestCompletionSummary.svelte";
+    import MathsRenderer from "$lib/components/MathsRenderer.svelte";
     import { getQuestion } from "$lib/api/question.remote.ts";
 
     let currentQuestionNumber = $state(1);
@@ -12,7 +13,6 @@
     let currentQuestion = $state({});
 
     let questionAttempts = $state([]);
-
     let currentAnswerAttempt = $state(null);
 
     $effect(() => {
@@ -21,12 +21,12 @@
         if (!id) return;
 
         getQuestion({ questionId: id }).then((res) => {
-            currentQuestion = res;
+            currentQuestion = structuredClone(res);
         });
     });
 
     async function submitAnswer(value) {
-        currentAnswerAttempt = value;
+        currentAnswerAttempt = $state.snapshot(value);
         questionAttempts.push(currentAnswerAttempt);
     }
 
@@ -44,12 +44,22 @@
 {/if}
 
 {#if currentAnswerAttempt === null}
-<QuestionWorkspace question={currentQuestion} submit={submitAnswer} />
+    {#key currentQuestionId}
+        <MathsRenderer>
+            <QuestionWorkspace question={currentQuestion} submit={submitAnswer} />
+        </MathsRenderer>
+    {/key}
 {:else}
-<AnswerFeedback answerAttempt={currentAnswerAttempt} />
-<div>
-    <button class="btn" onclick={advanceQuestion}>Next Question</button>
-</div>
+    {#key currentAnswerAttempt}
+        <div>
+            <MathsRenderer>
+                <AnswerFeedback answerAttempt={currentAnswerAttempt} />
+            </MathsRenderer>
+        </div>
+        <div>
+            <button class="btn" onclick={advanceQuestion}>Next Question</button>
+        </div>
+    {/key}
 {/if}
 
 {:else}
