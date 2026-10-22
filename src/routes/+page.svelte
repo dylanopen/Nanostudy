@@ -2,6 +2,7 @@
 import './layout.css';
 import Badge from "$lib/components/Badge.svelte";
 import TestWorkspace from "$lib/components/TestWorkspace.svelte";
+import MathsRenderer from "$lib/components/MathsRenderer.svelte";
 import { hasLaunched } from "$lib/data/countdown.ts"
 </script>
 
@@ -30,7 +31,9 @@ import { hasLaunched } from "$lib/data/countdown.ts"
 
                 <div class="tryit-widget-slot">
                     <h3>Try a practice question</h3>
+                    <MathsRenderer>
                     <TestWorkspace questionIds={["example-bidmas"]} hideMetadata=true />
+                    </MathsRenderer>
                 </div>
             </div>
         </section>

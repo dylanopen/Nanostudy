@@ -1,45 +1,67 @@
 <script>
-	import renderMathInElement from 'katex/dist/contrib/auto-render';
-	import 'katex/dist/katex.min.css';
+    import renderMathInElement from 'katex/dist/contrib/auto-render';
+    import 'katex/dist/katex.min.css';
 
-	let { children } = $props();
-	let container = $state();
+    let { children } = $props();
+    let container = $state();
 
-	// Helper to build a Kroki SVG URL from raw TikZ code
-	function formatTikzSrc(tikzCode) {
-		// Clean leading/trailing spaces and encode string safely for URL
-		const cleaned = tikzCode.trim();
-		const encoded = encodeURIComponent(cleaned);
-		return `https://kroki.io/tikz/svg?plain=${encoded}`;
-	}
+    function processMathAndTikz(target) {
+        if (!target) return;
 
-	$effect(() => {
-		if (!container) return;
+        const walker = document.createTreeWalker(target, NodeFilter.SHOW_TEXT);
+        const tikzNodes = [];
+        let node;
 
-		// 1. Intercept TikZ blocks and replace with rendered SVGs
-		const tikzRegex = /\\begin\{tikzpicture\}[\s\S]*?\\end\{tikzpicture\}/g;
-		const originalHtml = container.innerHTML;
+        while ((node = walker.nextNode())) {
+            if (node.nodeValue?.includes('\\begin{tikzpicture}')) {
+                tikzNodes.push(node);
+            }
+        }
 
-		if (tikzRegex.test(originalHtml)) {
-			container.innerHTML = originalHtml.replace(tikzRegex, (match) => {
-				const src = formatTikzSrc(match);
-				return `<div class="tikz-container" style="text-align:center; margin: 1rem 0;">
-					<img src="${src}" alt="TikZ Diagram" loading="lazy" style="max-width: 100%; height: auto;" />
-				</div>`;
-			});
-		}
+        tikzNodes.forEach((textNode) => {
+            const parent = textNode.parentNode;
+            if (!parent) return;
 
-		// 2. Run KaTeX for standard math delimiters ($...$ and $$...$$)
-		renderMathInElement(container, {
-			delimiters: [
-				{ left: '$$', right: '$$', display: true },
-				{ left: '$', right: '$', display: false }
-			],
-			throwOnError: false
-		});
-	});
+            const tikzRegex = /\\begin\{tikzpicture\}[\s\S]*?\\end\{tikzpicture\}/g;
+            const span = document.createElement('span');
+            span.innerHTML = textNode.nodeValue.replace(tikzRegex, (match) => {
+                const encoded = encodeURIComponent(match.trim());
+                const src = `https://kroki.io/tikz/svg?plain=${encoded}`;
+                return `<div class="tikz-container" style="text-align:center; margin: 1rem 0;">
+                    <img src="${src}" alt="TikZ Diagram" loading="lazy" style="max-width: 100%; height: auto;" />
+                </div>`;
+            });
+
+            parent.replaceChild(span, textNode);
+        });
+
+        renderMathInElement(target, {
+            delimiters: [
+                { left: '$$', right: '$$', display: true },
+                { left: '$', right: '$', display: false }
+            ],
+            throwOnError: false
+        });
+    }
+
+    $effect(() => {
+        if (!container) return;
+
+        // Initial pass
+        processMathAndTikz(container);
+
+        const observer = new MutationObserver(() => {
+            observer.disconnect();
+            processMathAndTikz(container);
+            observer.observe(container, { childList: true, subtree: true });
+        });
+
+        observer.observe(container, { childList: true, subtree: true });
+
+        return () => observer.disconnect();
+    });
 </script>
 
 <div bind:this={container}>
-	{@render children()}
+    {@render children()}
 </div>

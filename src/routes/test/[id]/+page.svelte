@@ -13,6 +13,8 @@
 
 <TestWorkspace lesson={data.lesson} questionIds={data.questionIds} />
 
+</MathsRenderer>
+
 <style>
 .title-header {
     text-align: center;
@@ -20,4 +22,3 @@
 }
 </style>
 
-</MathsRenderer>
