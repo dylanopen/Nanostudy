@@ -14,6 +14,7 @@
 
 <svelte:head>
     <link rel="icon" href={favicon} />
+    <title>Nanostudy - never lose a mark again</title>
 </svelte:head>
 
 <Header/>

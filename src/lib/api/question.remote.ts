@@ -1,11 +1,12 @@
 import { query } from '$app/server';
 import { db } from '$lib/server/db';
-import { basic_questions, multistep_questions, multistep_question_parts } from '$lib/server/db/schema';
-import { Answer, BasicQuestion, Question, AnswerSubmissionResult, MultistepQuestion } from '$lib/types/question';
+import { basic_questions, multistep_questions, multistep_question_parts, maths_questions } from '$lib/server/db/schema';
+import { BasicQuestion, Question, AnswerSubmissionResult, MultistepQuestion, MathsQuestion } from '$lib/types/question';
 import { sql } from 'drizzle-orm';
 import * as v from 'valibot';
 import { error } from '@sveltejs/kit';
 import { BasicAnswer } from '$lib/types/question';
+import { MathsQuestionTemplate } from '$lib/generator';
 
 export const fetchBasicQuestionById = query(
     v.object({
@@ -62,6 +63,34 @@ export const fetchMultistepQuestionById = query(
     }
 );
 
+export const fetchMathsQuestionById = query(
+    v.object({
+        questionId: v.string(),
+    }),
+    async ({ questionId }): Promise<MathsQuestion | null> => {
+        const [data] = await db.execute<typeof maths_questions.$inferSelect>(sql`
+            SELECT *
+            FROM ${maths_questions}
+            WHERE ${maths_questions.id} = ${questionId}
+        `);
+        if (!data) {
+            return null;
+        }
+
+        let template = new MathsQuestionTemplate(
+            data.id,
+            data.prompt,
+            data.constrained,
+            data.derived,
+            data.answers,
+            data.hint,
+            data.explanation
+        );
+
+        return template.generate();
+    }
+);
+
 export const getQuestion = query(
     v.object({
         questionId: v.string(),
@@ -71,7 +100,6 @@ export const getQuestion = query(
 
         if (!question) { throw error(404, 'Question not found'); }
 
-        question.hideAnswer();
         return question;
     }
 );

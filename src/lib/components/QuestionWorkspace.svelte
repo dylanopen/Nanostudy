@@ -12,14 +12,15 @@
 
     let { question, submit }: Props = $props();
 
+    $inspect(question, "question");
+
     async function submitAnswer(value) {
-        console.log(value, "value");
         let result: AnswerSubmissionResult;
         if (value instanceof AnswerSubmissionResult) {
-            console.log("Value is already an AnswerSubmissionResult:", value);
             result = value;
         } else {
-            result = await checkAnswer({ questionId: question.id, answerAttempt: value });
+            let isCorrect = question.answer.isCorrect(value);
+            result = new AnswerSubmissionResult(question, isCorrect, value);
         }
         submitCheckedAnswer(result);
     }
@@ -37,10 +38,8 @@
 <BasicQuestionWorkspace {question} submit={submitAnswer} />
 {:else if question.type === "multistep"}
 <MultistepQuestionWorkspace {question} submit={submitAnswer} />
-{:else if question}
-    <div>Loading question...</div>
 {:else}
-    <div>Unsupported question type: {question.type}</div>
+    <div>Loading question workspace...</div>
 {/if}
 
 </div>

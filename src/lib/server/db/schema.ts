@@ -1,4 +1,17 @@
-import { foreignKey, integer, jsonb, pgEnum, pgTable, primaryKey, text } from 'drizzle-orm/pg-core';
+import { foreignKey, integer, jsonb, pgTable, primaryKey, text } from 'drizzle-orm/pg-core';
+
+export type ConstrainedVariable = {
+    name: string;
+    min: number;
+    max: number;
+    step: number;
+    exclude: number[];
+};
+
+export type DerivedVariable = {
+    name: string;
+    expression: string;
+};
 
 export const courses = pgTable("courses", {
     id: text().primaryKey(),
@@ -60,5 +73,15 @@ export const multistep_question_parts = pgTable("multistep_question_parts", {
     multistep_id: text().notNull(),
     part_question_id: text().notNull(),
     index: integer().notNull(),
+}).enableRLS();
+
+export const maths_questions = pgTable("maths_questions", {
+    id: text().primaryKey(),
+    prompt: text().notNull(),
+    constrained: jsonb().$type<ConstrainedVariable[]>().notNull().default([]), // do we need to put "constrained" in jsonb function?
+    derived: jsonb().$type<DerivedVariable[]>().notNull().default([]),
+    answers: jsonb().$type<string[]>().notNull().default([]),
+    hint: text(),
+    explanation: text(),
 }).enableRLS();
 

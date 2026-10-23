@@ -12,7 +12,7 @@
 {:else if question.type === "multistep"}
 <MultistepQuestionPreview {question} />
 {:else}
-    <div>Unsupported question type: {question.type}</div>
+<div>Loading question preview...</div>
 {/if}
 
 </div>

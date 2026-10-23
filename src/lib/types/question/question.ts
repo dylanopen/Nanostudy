@@ -1,11 +1,11 @@
 import type { Answer } from "./answer";
 
-export abstract class Question {
+export abstract class Question<T extends Answer = Answer> {
     public abstract readonly type: string;
     constructor(
         public id: string,
         public prompt: string,
-        public answer: Answer | undefined,
+        public answer: T,
     ) {}
 
     static async load(id: string): Promise<Question | null> {
@@ -17,15 +17,15 @@ export abstract class Question {
         question = await MultistepQuestion.load(id); 
         if (question) return question; 
 
+        const { MathsQuestion } = await import("./maths");
+        question = await MathsQuestion.load(id); 
+        if (question) return question; 
+
         return null; 
     }
 
     static async example(): Promise<Question | null> {
         return Question.load("example-question");
-    }
-
-    public hideAnswer(): void {
-        this.answer = undefined;
     }
 }
 

@@ -21,12 +21,11 @@
         if (!id) return;
 
         getQuestion({ questionId: id }).then((res) => {
-            currentQuestion = structuredClone(res);
+            currentQuestion = res;
         });
     });
 
     async function submitAnswer(value) {
-        console.log(value, "submitAnswer value");
         currentAnswerAttempt = value;
         questionAttempts.push(currentAnswerAttempt);
     }
