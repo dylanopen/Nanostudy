@@ -87,60 +87,12 @@ import { hasLaunched } from "$lib/data/countdown.ts"
 </div>
 
 <style>
-.header {
-    padding: 1.25rem 0;
-    border-bottom: 1px solid var(--nano-border-subtle-color);
-}
-
-.header-inner {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    align-items: center;
-}
-
-.brand-title {
-    display: inline-block;
-    font-size: 1.25rem;
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    color: var(--nano-fg-primary-color);
-    vertical-align: middle;
-    margin-left: 0.5rem;
-}
-
-.nav-links {
-    text-align: right;
-}
-
-.nav-links a:not(.btn) {
-    display: inline-block;
-    text-decoration: none;
-    font-weight: 600;
-    font-size: 0.9375rem;
-    color: var(--nano-fg-secondary-color);
-    margin-right: 1.5rem;
-    vertical-align: middle;
-}
-
-.nav-links a:not(.btn):hover {
-    color: var(--nano-fg-primary-color);
-}
-
 .hero-section {
     padding: 4.5rem 0 3rem;
 }
 
 .hero-container {
     text-align: center;
-}
-
-.hero-badge {
-    margin-bottom: 1.5rem;
-}
-
-.badge-dot {
-    color: var(--nano-border-color);
-    margin: 0 0.25rem;
 }
 
 .hero-title {
@@ -158,7 +110,6 @@ import { hasLaunched } from "$lib/data/countdown.ts"
 .hero-actions {
     margin-bottom: 3.5rem;
 }
-
 
 .features-section {
     padding-bottom: 4.5rem;
