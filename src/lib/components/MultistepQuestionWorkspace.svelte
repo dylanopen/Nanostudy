@@ -1,7 +1,7 @@
 <script lang="ts">
     let { question, submit } = $props();
 
-    import { AnswerSubmissionResult } from "$lib/types/question.ts";
+    import { AnswerSubmissionResult } from "$lib/types/question";
 
     import QuestionWorkspace from "$lib/components/QuestionWorkspace.svelte";
     import RawInput from "$lib/components/RawInput.svelte";
@@ -16,6 +16,7 @@
     var currentAnswerAttempt = $state(null);
 
     async function submitAnswer(attempt) {
+        question.steps[currentStepIndex-1].answer = attempt.question.answer;
         currentAnswerAttempt = attempt;
         answers.push(attempt);
         if (currentStepIndex >= question.steps.length) {
@@ -29,17 +30,19 @@
     }
 
 async function finishQuestion() {
+    question.answer = answers[answers.length - 1].question.answer;
     let result = new AnswerSubmissionResult(
-        $state.snapshot(question),
+        question,
         answers.every(a => a.isCorrect),
-        undefined,
-        $state.snapshot(answers)
+        question.answer.studentAnswer,
+        answers,
     );
     submit(result);
 }
 </script>
 
 {#each question.steps.slice(0, currentStepIndex-1) as step, stepIndex}
+{console.log(step)}
 <QuestionPreview question={step} />
 {/each}
 

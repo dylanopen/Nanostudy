@@ -1,7 +1,7 @@
 <script lang="ts">
     let { question } = $props();
 
-    let finalAnswer = $derived(question.steps[question.steps.length - 1].answer.answers[0]);
+    let finalAnswer = $derived(question.answer.display());
     import QuestionPreview from "$lib/components/QuestionPreview.svelte";
 </script>
 

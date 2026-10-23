@@ -26,7 +26,8 @@
     });
 
     async function submitAnswer(value) {
-        currentAnswerAttempt = $state.snapshot(value);
+        console.log(value, "submitAnswer value");
+        currentAnswerAttempt = value;
         questionAttempts.push(currentAnswerAttempt);
     }
 

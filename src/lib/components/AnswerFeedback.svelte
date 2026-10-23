@@ -3,21 +3,9 @@
 
     const { answerAttempt } = $props();
 
-    function getCorrectAnswer(attempt: typeof answerAttempt): string | undefined {
-        if (attempt?.question?.answer?.answers?.[0]) {
-            return attempt.question.answer.answers[0];
-        }
-        if (attempt?.steps?.length) {
-            return getCorrectAnswer(attempt.steps[attempt.steps.length - 1]);
-        }
-        return undefined;
-    }
-
-    const correctAnswer = $derived(getCorrectAnswer(answerAttempt));
+    const correctAnswer = $derived(answerAttempt.question.answer.display());
     const isMultiStep = $derived(Boolean(answerAttempt.steps?.length));
 </script>
-
-Some answer feedback is showing...
 
 <div class="feedback-card">
     <div class="question-header">
@@ -50,17 +38,17 @@ Some answer feedback is showing...
         {/if}
     {/if}
 
-    {#if answerAttempt.question?.answer?.hint}
+    {#if answerAttempt.question?.answer?.hint()}
         <div class="info-card">
             <span class="label">Hint</span>
-            <p>{answerAttempt.question.answer.hint}</p>
+            <p>{answerAttempt.question.answer.hint()}</p>
         </div>
     {/if}
 
-    {#if answerAttempt.question?.answer?.explanation}
+    {#if answerAttempt.question?.answer?.explanation()}
         <div class="info-card">
             <span class="label">Explanation</span>
-            <p>{answerAttempt.question.answer.explanation}</p>
+            <p>{answerAttempt.question.answer.explanation()}</p>
         </div>
     {/if}
 

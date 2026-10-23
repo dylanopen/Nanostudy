@@ -25,7 +25,6 @@
     }
 
     async function submitCheckedAnswer(answer) {
-        console.log("Submitting answer:", answer);
         submit(answer);
     }
 </script>

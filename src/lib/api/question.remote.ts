@@ -5,6 +5,7 @@ import { Answer, BasicQuestion, Question, AnswerSubmissionResult, MultistepQuest
 import { sql } from 'drizzle-orm';
 import * as v from 'valibot';
 import { error } from '@sveltejs/kit';
+import { BasicAnswer } from '$lib/types/question';
 
 export const fetchBasicQuestionById = query(
     v.object({
@@ -24,7 +25,7 @@ export const fetchBasicQuestionById = query(
         return new BasicQuestion(
             bq.id,
             bq.prompt,
-            new Answer(bq.answers, bq.hint, bq.explanation),
+            new BasicAnswer(bq.answers, bq.hint, bq.explanation),
         );
     }
 );
@@ -82,10 +83,10 @@ export const checkAnswer = query(
     }),
     async ({ questionId, answerAttempt }): Promise<AnswerSubmissionResult> => {
         const question: Question | null = await Question.load(questionId);
-        if (!question || !question.answer || !question.markingEngine) { throw error(404, 'Question not found'); }
+        if (!question) { throw error(404, 'Question not found'); }
+        if (!question.answer) { throw error(404, 'Question does not have an answer'); }
 
-        const correctAnswer: Answer = question.answer;
-        const isCorrect: boolean = question.markingEngine.isCorrect(correctAnswer, answerAttempt);
+        const isCorrect: boolean = question.answer.isCorrect(answerAttempt);
 
         return new AnswerSubmissionResult(question, isCorrect, answerAttempt);
     }
