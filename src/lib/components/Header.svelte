@@ -1,9 +1,8 @@
 <script lang="ts">
-    import BrandIcon from "$lib/components/BrandIcon.svelte";
 </script>
 
 <header class="header">
-    <a href="/" class="btn btn-link brand nanostudy-icon"><img src="/nanostudy.svg" /></a>
+    <a href="/" class="btn btn-link brand nanostudy-icon"><img src="/nanostudy.svg" height="48" /></a>
     <a href="/courses" class="btn btn-link">Discover topics</a>
     <a href="/statistics" class="btn btn-link">My progress</a>
 </header>
@@ -17,6 +16,6 @@
 
     .nanostudy-icon {
         width: 170px;
-        padding: 0;
+        padding: 0.4rem 12rem 0rem 1rem
     }
 </style>
