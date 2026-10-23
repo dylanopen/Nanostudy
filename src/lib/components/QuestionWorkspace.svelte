@@ -12,8 +12,6 @@
 
     let { question, submit }: Props = $props();
 
-    $inspect(question, "question");
-
     async function submitAnswer(value) {
         let result: AnswerSubmissionResult;
         if (value instanceof AnswerSubmissionResult) {

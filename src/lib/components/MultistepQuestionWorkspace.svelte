@@ -10,8 +10,6 @@
 
     var currentStepIndex = $state(1);
     var currentStep = $derived(question.steps[currentStepIndex-1]);
-    $inspect(currentStep, "currentStep");
-    $inspect(question);
     var answers = []
     var currentAnswerAttempt = $state(null);
 
@@ -42,7 +40,6 @@ async function finishQuestion() {
 </script>
 
 {#each question.steps.slice(0, currentStepIndex-1) as step, stepIndex}
-{console.log(step)}
 <QuestionPreview question={step} />
 {/each}
 
