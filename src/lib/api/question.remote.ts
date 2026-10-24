@@ -153,9 +153,6 @@ export const fetchMultimathsQuestionById = query(
                     });
                 }
                 let question = template.generate(stepVariables);
-                console.log(`Generated question for part ${part.part_question_id}:`, question);
-                console.log(`Variable mapping for part ${part.part_question_id}:`, part.variable_mapping);
-                console.log(`Variables for part ${part.part_question_id}:`, stepVariables);
                 return question;
             })
         );
