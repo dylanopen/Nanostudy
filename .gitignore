@@ -25,3 +25,8 @@ Thumbs.db
 # Vite
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+
+# Don't commit Nanostudy's content - this is All Rights Reserved whereas the
+# rest of the repo is MIT licensed.
+content.json
+backup/

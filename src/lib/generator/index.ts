@@ -70,7 +70,31 @@ export class MathsQuestionTemplate {
         for (const variable of variables) {
             expressionWithValues = expressionWithValues.replaceAll(`[[${variable.name}]]`, variable.value);
         }
-        return expressionWithValues;
+        return this.simplifyAbnormalities(expressionWithValues);
+    }
+
+    private simplifyAbnormalities(expression: string): string {
+        // I'm using regex to ignore any whitespace when matching.
+        // TODO: We only want to do this if we're inside a LaTeX block ($...$)
+
+        // Remove unnecessary +0, -0, *1, /1, etc.
+        expression = expression.replace(/(\+|\-)\s*0/g, '');
+        expression = expression.replace(/\*\s*1/g, '');
+        expression = expression.replace(/\/\s*1/g, '');
+
+        // Replace any +- signs with a single - sign
+        expression = expression.replace(/\+\s*-\s*/g, '-');
+
+        // Replace any -- signs with a single + sign
+        expression = expression.replace(/-\s*-\s*/g, '+');
+
+        // Remove the coefficient 1 from expressions like 1x, 1y, etc.
+        expression = expression.replace(/\b1([a-zA-Z])\b/g, '$1');
+
+        // Remove any leading + signs
+        expression = expression.replace(/^\+\s*/g, '');
+
+        return expression;
     }
 
     private evaluateDerivedVariable(derivedVariable: DerivedVariable, variables: GeneratedVariable[]): GeneratedVariable {

@@ -1,7 +1,7 @@
 import { fetchMathsQuestionById } from "$lib/api/question.remote";
 import { Question } from "$lib/types/question/question";
 import { Answer } from "$lib/types/question/answer";
-import { parse, symbolicEqual } from "mathjs";
+import { parse, compare } from "@khanacademy/kas";
 
 export type GeneratedVariable = {
     name: string;
@@ -46,10 +46,14 @@ export class MathsAnswer extends Answer {
     }
 
     public isCorrect(studentAnswer: string): boolean {
-        const studentNode = parse(studentAnswer);
+        const studentExpr = parse(studentAnswer).expr;
         for (const validAnswer of this.validAnswers) {
-            const answerNode = parse(validAnswer);
-            if (symbolicEqual(answerNode, studentNode)) {
+            const answerExpr = parse(validAnswer).expr;
+            const result = compare(studentExpr, answerExpr, {
+                form: true,
+            });
+            console.log(result);
+            if (result.equal) {
                 return true;
             }
         }
