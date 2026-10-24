@@ -21,6 +21,10 @@ export abstract class Question<T extends Answer = Answer> {
         question = await MathsQuestion.load(id); 
         if (question) return question; 
 
+        const { MultimathsQuestion } = await import("./multimaths");
+        question = await MultimathsQuestion.load(id); 
+        if (question) return question;
+
         return null; 
     }
 

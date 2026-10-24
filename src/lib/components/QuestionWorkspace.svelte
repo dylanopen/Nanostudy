@@ -4,6 +4,8 @@
     import QuestionDisplay from "$lib/components/QuestionDisplay.svelte";
     import BasicQuestionWorkspace from "$lib/components/BasicQuestionWorkspace.svelte";
     import MultistepQuestionWorkspace from "$lib/components/MultistepQuestionWorkspace.svelte";
+    import MathsQuestionWorkspace from "$lib/components/MathsQuestionWorkspace.svelte";
+    import MultimathsQuestionWorkspace from "$lib/components/MultimathsQuestionWorkspace.svelte";
 
     interface Props {
         question: Question;
@@ -36,6 +38,10 @@
 <BasicQuestionWorkspace {question} submit={submitAnswer} />
 {:else if question.type === "multistep"}
 <MultistepQuestionWorkspace {question} submit={submitAnswer} />
+{:else if question.type === "maths"}
+<MathsQuestionWorkspace {question} submit={submitAnswer} />
+{:else if question.type === "multimaths"}
+<MultimathsQuestionWorkspace {question} submit={submitAnswer} />
 {:else}
     <div>Loading question workspace...</div>
 {/if}

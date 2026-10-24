@@ -9,7 +9,7 @@ export type GeneratedVariable = {
 };
 
 export class MathsQuestion extends Question<MathsAnswer> {
-    readonly type: string = "basic";
+    readonly type: string = "maths";
 
     constructor(
         id: string,

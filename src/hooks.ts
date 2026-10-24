@@ -4,6 +4,7 @@ import { Lesson } from '$lib/types/lesson';
 import { Question, Answer, BasicQuestion, BasicAnswer, MultistepQuestion, AnswerSubmissionResult, MathsQuestion } from '$lib/types/question';
 import { MathsQuestionTemplate } from '$lib/generator';
 import { MathsAnswer } from '$lib/types/question/maths';
+import { MultimathsQuestion } from '$lib/types/question/multimaths';
 
 const models: Record<string, any> = {
     Course,
@@ -16,6 +17,7 @@ const models: Record<string, any> = {
     MultistepQuestion,
     MathsQuestion,
     MathsQuestionTemplate,
+    MultimathsQuestion,
     MathsAnswer,
     AnswerSubmissionResult,
 };

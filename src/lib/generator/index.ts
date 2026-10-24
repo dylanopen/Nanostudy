@@ -14,8 +14,8 @@ export class MathsQuestionTemplate {
         public explanation: string | null,
     ) {}
 
-    public generate(): MathsQuestion {
-        const variables: GeneratedVariable[] = [];
+    public generateVariables(): GeneratedVariable[] {
+        let variables: GeneratedVariable[] = [];
         for (const constrainedVariable of this.constrained) {
             const generatedValue = this.generateVariableValue(constrainedVariable);
             variables.push({
@@ -23,10 +23,24 @@ export class MathsQuestionTemplate {
                 value: generatedValue,
             });
         }
+        let derivedVariables = this.generateDerivedVariables(variables);
+        variables.push(...derivedVariables);
+        return variables;
+    }
+
+    public generateDerivedVariables(variables: GeneratedVariable[]): GeneratedVariable[] {
+        let derivedVariables: GeneratedVariable[] = [];
         for (const derivedVariable of this.derived) {
-            this.evaluateDerivedVariable(derivedVariable, variables);
+            derivedVariables.push(this.evaluateDerivedVariable(derivedVariable, variables));
         }
-        // TODO: support for variables being derived from other derived variables.
+        return derivedVariables;
+    }
+
+    public generate(variables?: GeneratedVariable[]): MathsQuestion {
+        if (!variables || variables.length === 0) {
+            variables = this.generateVariables();
+        }
+        variables = variables.concat(this.generateDerivedVariables(variables));
 
         let question = new MathsQuestion(
             this.id,
@@ -41,6 +55,12 @@ export class MathsQuestionTemplate {
         for (let i = 0; i < question.answer.validAnswers.length; i++) {
             question.answer.validAnswers[i] = this.insertVariablesIntoExpression(question.answer.validAnswers[i], variables);
         }
+        if (question.answer.mathsHint) {
+            question.answer.mathsHint = this.insertVariablesIntoExpression(question.answer.mathsHint, variables);
+        }
+        if (question.answer.mathsExplanation) {
+            question.answer.mathsExplanation = this.insertVariablesIntoExpression(question.answer.mathsExplanation, variables);
+        }
 
         return question;
     }
@@ -53,14 +73,14 @@ export class MathsQuestionTemplate {
         return expressionWithValues;
     }
 
-    private evaluateDerivedVariable(derivedVariable: DerivedVariable, variables: GeneratedVariable[]): void {
+    private evaluateDerivedVariable(derivedVariable: DerivedVariable, variables: GeneratedVariable[]): GeneratedVariable {
         const expressionWithValues = this.insertVariablesIntoExpression(derivedVariable.expression, variables);
         const parsedExpression = parse(expressionWithValues);
         const evaluatedValue = parsedExpression.evaluate();
-        variables.push({
+        return {
             name: derivedVariable.name,
             value: evaluatedValue.toString(),
-        });
+        };
     }
 
     private generateVariableValue(variable: ConstrainedVariable): string {

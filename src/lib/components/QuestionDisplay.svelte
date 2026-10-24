@@ -3,6 +3,8 @@
 
     import BasicQuestionDisplay from "$lib/components/BasicQuestionDisplay.svelte";
     import MultistepQuestionDisplay from "$lib/components/MultistepQuestionDisplay.svelte";
+    import MathsQuestionDisplay from "$lib/components/MathsQuestionDisplay.svelte";
+    import MultimathsQuestionDisplay from "$lib/components/MultimathsQuestionDisplay.svelte";
 </script>
 
 <div class="question-prompt">
@@ -11,6 +13,10 @@
     <BasicQuestionDisplay {question} />
 {:else if question.type === "multistep"}
     <MultistepQuestionDisplay {question} />
+{:else if question.type === "maths"}
+    <MathsQuestionDisplay {question} />
+{:else if question.type === "multimaths"}
+    <MultimathsQuestionDisplay {question} />
 {:else}
     <div>Loading question display...</div>
 {/if}

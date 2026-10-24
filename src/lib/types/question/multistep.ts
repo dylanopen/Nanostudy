@@ -10,7 +10,10 @@ export class MultistepQuestion extends Question {
         prompt: string,
         steps: Question[],
     ) {
-        let answer = steps.length > 0 ? steps[steps.length - 1].answer : undefined;
+        if (steps.length === 0) {
+            throw new Error("MultistepQuestion must have at least one step.");
+        }
+        let answer = steps[steps.length - 1].answer;
         super(id, prompt, answer);
         this.steps = steps;
     }
