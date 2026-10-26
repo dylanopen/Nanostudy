@@ -52,6 +52,7 @@ export class MathsQuestionTemplate {
                 this.answers,
                 this.hint,
                 this.explanation,
+                this.markingEngine || "cas",
             )
         );
         question.prompt = this.insertVariablesIntoExpression(question.prompt, variables);
@@ -96,7 +97,6 @@ export class MathsQuestionTemplate {
 
     private evaluateDerivedVariable(derivedVariable: DerivedVariable, variables: GeneratedVariable[]): GeneratedVariable {
         const expressionWithValues = this.insertVariablesIntoExpression(derivedVariable.expression, variables);
-        console.log(`Evaluating derived variable ${derivedVariable.name}: original expression "${derivedVariable.expression}" becomes "${expressionWithValues}"`);
         const parsedExpression = parse(expressionWithValues);
         const evaluatedValue = parsedExpression.evaluate();
         return {

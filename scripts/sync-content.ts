@@ -29,6 +29,7 @@ export interface MathsQuestionDef {
   answers: string[];
   hint?: string | null;
   explanation?: string | null;
+  marking_type?: string | null;
 }
 
 export interface MultistepPartDef {
@@ -156,6 +157,7 @@ function processQuestion(q: string | QuestionDef): string {
         answers: q.answers,
         hint: q.hint ?? null,
         explanation: q.explanation ?? null,
+        marking_type: q.marking_type ?? null,
       });
       break;
 

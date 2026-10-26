@@ -79,7 +79,7 @@ export const fetchMathsQuestionTemplateById = query(
             return null;
         }
 
-        return new MathsQuestionTemplate(
+        let question = new MathsQuestionTemplate(
             data.id,
             data.prompt,
             data.constrained,
@@ -89,6 +89,7 @@ export const fetchMathsQuestionTemplateById = query(
             data.explanation,
             data.marking_type || "cas",
         );
+        return question;
     }
 );
 
@@ -192,7 +193,6 @@ export const fetchMultimathsQuestionById = query(
         );
 
         let multimaths = new MultimathsQuestion(rootQuestion.id, rootQuestion.prompt, stepQuestions);
-        console.log(`Loaded multimaths question ${multimaths.id} with ${multimaths.steps.length} steps: `, multimaths);
         return multimaths;
     }
 );
