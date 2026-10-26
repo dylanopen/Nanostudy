@@ -81,12 +81,16 @@ export class MathsAnswer extends Answer {
         const studentStr = String(studentAnswer).trim();                               
         if (!studentStr) return false;                                                 
 
-        const studentNum = number(evaluate(studentStr)) as number;                               
+        try {
+            const studentNum = number(studentStr) as number;                               
+        } catch (e) {
+            return false; // they didn't even type a number, so it's definitely wrong
+        }
         const decimalPart = studentStr.split('.')[1];                                  
         const precision = decimalPart ? decimalPart.length : 0;                        
 
         for (let exactAnswer of this.validAnswers) {                                       
-            const exactNum = number(evaluate(String(exactAnswer))) as number;                        
+            const exactNum = number(String(exactAnswer)) as number;                        
             if (studentNum === round(exactNum, precision)) {                                  
                 return true;                                                               
             }                                                                              
