@@ -2,7 +2,7 @@
     let { question, submit } = $props();
 
     import BasicQuestionDisplay from "$lib/components/BasicQuestionDisplay.svelte";
-    import RawInput from "$lib/components/RawInput.svelte";
+    import MathsInput from "$lib/components/MathsInput.svelte";
 </script>
 
-<RawInput submit={submit} />
+<MathsInput submit={submit} />
