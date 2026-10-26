@@ -30,9 +30,37 @@
 
   function submitInputBox() {
     const rawValue = mathfield?.value ?? value ?? "";
-    submit(rawValue);
+    submit("$" + rawValue + "$");
   }
 </script>
 
-<math-field use:init {...rest}></math-field>
-<button class="btn btn-accent" onclick={submitInputBox}>Submit</button>
+<div class="input-container">
+  <math-field use:init {...rest}></math-field>
+  <button class="btn btn-accent" onclick={submitInputBox}>Submit</button>
+</div>
+
+<style>
+  .input-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+  }
+
+  math-field {
+    flex: 1;
+    min-width: 250px;
+    display: inline-block;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1.5rem;
+    --contains-highlight-background-color: rgba(0, 0, 0, 0.05); /* or 'transparent' to turn off */
+    --selection-background-color: rgba(45, 106, 79, 0.2);
+    --selection-color: inherit;
+  }
+
+  .btn {
+    padding: 1.25rem;
+  }
+</style>

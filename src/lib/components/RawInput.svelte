@@ -1,13 +1,38 @@
 <script lang="ts">
-    let { submit } = $props();
+  type Props = {
+    submit: (value: string) => void;
+  };
 
-    function submitInputBox() {
-        let inputBox = document.getElementById("input-box");
-        let rawValue = inputBox.value;
-        submit(rawValue);
+  let { submit }: Props = $props();
+  let inputBox: HTMLInputElement | undefined = $state();
+
+  function submitInputBox() {
+    if (inputBox) {
+      submit(inputBox.value);
     }
+  }
 </script>
 
-<input type="text" id="input-box" class="text-input text-input-accent" />
-<button class="btn btn-accent" onclick={submitInputBox}>Submit</button>
+<div class="input-container">
+  <input
+    bind:this={inputBox}
+    type="text"
+    class="text-input text-input-accent"
+    onkeydown={(e) => e.key === "Enter" && submitInputBox()}
+  />
+  <button class="btn btn-accent" onclick={submitInputBox}>Submit</button>
+</div>
 
+<style>
+  .input-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+  }
+
+  .text-input {
+    flex: 1;
+    width: 100%;
+  }
+</style>

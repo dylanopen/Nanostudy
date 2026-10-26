@@ -3,6 +3,7 @@ import { Question } from "$lib/types/question/question";
 import { Answer } from "$lib/types/question/answer";
 import { parse, compare } from "@khanacademy/kas";
 import { evaluate, number, round } from "mathjs";
+import { convertLatexToAsciiMath, MathfieldElement } from "mathlive";
 
 export type GeneratedVariable = {
     name: string;
@@ -53,6 +54,7 @@ export class MathsAnswer extends Answer {
     }
 
     public isCorrect(studentAnswer: string): boolean {
+        studentAnswer = convertLatexToAsciiMath(studentAnswer.slice(1, -1)); // remove $ signs
         if (this.markingType == "cas") {
             return this.isCorrectCas(studentAnswer);
         } else if (this.markingType == "approx") {
