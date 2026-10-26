@@ -65,6 +65,7 @@ export const maths_questions = pgTable("maths_questions", {
   answers: jsonb("answers").$type<string[]>().notNull().default([]),
   hint: text("hint"),
   explanation: text("explanation"),
+  marking_type: text("marking_type"),
 }).enableRLS();
 
 export const multistep_questions = pgTable("multistep_questions", {
@@ -89,7 +90,7 @@ export const multimaths_questions = pgTable("multimaths_questions", {
 
 export const multimaths_question_parts = pgTable("multimaths_question_parts", {
   multimaths_id: text("multimaths_id").notNull().references(() => multimaths_questions.id),
-  part_question_id: text("part_question_id").notNull().references(() => maths_questions.id),
+  part_question_id: text("part_question_id").notNull(),
   variable_mapping: jsonb("variable_mapping").$type<Record<string, string>>().notNull().default({}),
   index: integer("index").notNull(),
 }, (table) => [

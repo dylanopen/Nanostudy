@@ -29,6 +29,7 @@ export class MathsAnswer extends Answer {
         public validAnswers: string[],
         public mathsHint: string | null,
         public mathsExplanation: string | null,
+        public markingType: "cas" | "exact" = "cas",
     ) {
         super()
     }
@@ -52,7 +53,6 @@ export class MathsAnswer extends Answer {
             const result = compare(studentExpr, answerExpr, {
                 form: true,
             });
-            console.log(result);
             if (result.equal) {
                 return true;
             }

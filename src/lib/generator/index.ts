@@ -4,14 +4,17 @@ import { MathsAnswer, type GeneratedVariable } from "$lib/types/question/maths";
 import { evaluate, parse } from "mathjs";
 
 export class MathsQuestionTemplate {
+    readonly type: string = "maths-template";
+
     constructor(
         public id: string,
         public prompt: string,
         public constrained: ConstrainedVariable[],
         public derived: DerivedVariable[],
         public answers: string[],
-        public hint: string | null,
-        public explanation: string | null,
+        public hint: string | null = null,
+        public explanation: string | null = null,
+        public markingEngine: string | null = null,
     ) {}
 
     public generateVariables(): GeneratedVariable[] {
@@ -76,29 +79,24 @@ export class MathsQuestionTemplate {
     private simplifyAbnormalities(expression: string): string {
         // I'm using regex to ignore any whitespace when matching.
         // TODO: We only want to do this if we're inside a LaTeX block ($...$)
-
-        // Remove unnecessary +0, -0, *1, /1, etc.
-        expression = expression.replace(/(\+|\-)\s*0/g, '');
-        expression = expression.replace(/\*\s*1/g, '');
-        expression = expression.replace(/\/\s*1/g, '');
-
-        // Replace any +- signs with a single - sign
-        expression = expression.replace(/\+\s*-\s*/g, '-');
-
-        // Replace any -- signs with a single + sign
-        expression = expression.replace(/-\s*-\s*/g, '+');
-
-        // Remove the coefficient 1 from expressions like 1x, 1y, etc.
-        expression = expression.replace(/\b1([a-zA-Z])\b/g, '$1');
-
-        // Remove any leading + signs
-        expression = expression.replace(/^\+\s*/g, '');
-
-        return expression;
+        
+        return expression
+        // Remove unnecessary +0, -0 (I need to be ABSOLUTELY sure 0 isn't part of 0.5 or 00)
+        .replace(/(\+|\-)\s*0(?!\d|\.)/g, '')                                                                     
+        
+        // Match *1 or /1 ONLY if not followed by another digit (e.g. keeps *10 intact)
+        .replace(/\*\s*1(?!\d)/g, '')                                                                         
+        .replace(/\/\s*1(?!\d)/g, '')                                                                         
+                                                                                                    
+        .replace(/\+\s*-\s*/g, '-') // +- -> -                                                     
+        .replace(/-\s*-\s*/g, '+')  // -- -> +                                                     
+        .replace(/\b1([a-zA-Z])\b/g, '$1') // 1x -> x
+        .replace(/^\+\s*/g, '');    // Leading +}
     }
 
     private evaluateDerivedVariable(derivedVariable: DerivedVariable, variables: GeneratedVariable[]): GeneratedVariable {
         const expressionWithValues = this.insertVariablesIntoExpression(derivedVariable.expression, variables);
+        console.log(`Evaluating derived variable ${derivedVariable.name}: original expression "${derivedVariable.expression}" becomes "${expressionWithValues}"`);
         const parsedExpression = parse(expressionWithValues);
         const evaluatedValue = parsedExpression.evaluate();
         return {

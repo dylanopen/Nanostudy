@@ -2,5 +2,5 @@
     let { question } = $props();
 </script>
 
-<h3>{question.prompt}</h3>
+<span>{question.prompt}</span>
 

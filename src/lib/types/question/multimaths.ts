@@ -1,14 +1,15 @@
 import { fetchMultimathsQuestionById } from "$lib/api/question.remote";
-import { MathsQuestion, Question } from ".";
+import { Answer, Question } from ".";
+import type { MathsAnswer } from "./maths";
 
-export class MultimathsQuestion extends Question {
+export class MultimathsQuestion extends Question<Answer> {
     readonly type: string = "multimaths";
     public steps: Question[];
 
     constructor(
         id: string,
         prompt: string,
-        steps: MathsQuestion[],
+        steps: Question<Answer>[],
     ) {
         if (steps.length === 0) {
             throw new Error("MultimathsQuestion must have at least one step.");
@@ -21,4 +22,5 @@ export class MultimathsQuestion extends Question {
     static async load(id: string): Promise<MultimathsQuestion | null> {
         return await fetchMultimathsQuestionById({ questionId: id });
     }
+
 }

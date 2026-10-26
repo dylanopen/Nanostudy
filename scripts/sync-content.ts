@@ -7,13 +7,92 @@ import { drizzle } from 'drizzle-orm/postgres-js';
 import postgres from 'postgres';
 
 import * as schema from '../src/lib/server/db/schema';
-import type {
-  ContentPayload,
-  CourseDef,
-  LessonDef,
-  QuestionDef,
-  TopicDef,
-} from '../src/lib/server/db/content-schema';
+import type { ConstrainedVariable, DerivedVariable } from '../src/lib/server/db/schema';
+
+export type QuestionType = 'basic' | 'maths' | 'multistep' | 'multimaths';
+
+export interface BasicQuestionDef {
+  type: 'basic';
+  id: string;
+  prompt: string;
+  answers?: string[];
+  hint?: string | null;
+  explanation?: string | null;
+}
+
+export interface MathsQuestionDef {
+  type: 'maths';
+  id: string;
+  prompt: string;
+  constrained?: ConstrainedVariable[];
+  derived?: DerivedVariable[];
+  answers: string[];
+  hint?: string | null;
+  explanation?: string | null;
+}
+
+export interface MultistepPartDef {
+  index: number;
+  question: string | BasicQuestionDef | MathsQuestionDef | MultistepQuestionDef;
+}
+
+export interface MultistepQuestionDef {
+  type: 'multistep';
+  id: string;
+  prompt: string;
+  parts: MultistepPartDef[];
+}
+
+export interface MultimathsPartDef {
+  index: number;
+  variable_mapping?: Record<string, string>;
+  question: string | MathsQuestionDef | MultimathsQuestionDef;
+}
+
+export interface MultimathsQuestionDef {
+  type: 'multimaths';
+  id: string;
+  prompt: string;
+  constrained?: ConstrainedVariable[];
+  derived?: DerivedVariable[];
+  parts: MultimathsPartDef[];
+}
+
+export type QuestionDef =
+  | BasicQuestionDef
+  | MathsQuestionDef
+  | MultistepQuestionDef
+  | MultimathsQuestionDef;
+
+export interface LessonDef {
+  id: string;
+  title: string;
+  read_content?: string | null;
+  prerequisites?: string[];
+  questions?: (string | QuestionDef)[];
+}
+
+export interface TopicDef {
+  topic_id: string;
+  title: string;
+  index: number;
+  lessons?: (string | LessonDef)[];
+}
+
+export interface CourseDef {
+  id: string;
+  title: string;
+  level?: string | null;
+  exam_board?: string | null;
+  grade_scale?: string | null;
+  topics?: TopicDef[];
+}
+
+export interface ContentPayload {
+  courses?: CourseDef[];
+  lessons?: LessonDef[];
+  questions?: QuestionDef[];
+}
 
 config({ path: '.env' });
 
@@ -118,7 +197,11 @@ function processQuestion(q: string | QuestionDef): string {
   return q.id;
 }
 
-function processLesson(lesson: string | LessonDef, courseId?: string, topicId?: string): string {
+function processLesson(
+  lesson: string | LessonDef,
+  courseId?: string,
+  topicId?: string
+): string {
   if (typeof lesson === 'string') {
     if (courseId && topicId) {
       const compositeKey = `${courseId}:${topicId}:${lesson}`;
@@ -210,9 +293,6 @@ function getCompositeStringKey<T>(item: T, primaryKeys: (keyof T)[]): string {
   return primaryKeys.map((pk) => String(item[pk])).join(':::');
 }
 
-/**
- * Perform bulk diffing in-memory against database tables.
- */
 async function computeDiff<T extends Record<string, any>>(config: SyncConfig<T>) {
   const { table, incomingItems, primaryKeys } = config;
 
@@ -265,13 +345,11 @@ async function applyUpserts<T extends Record<string, any>>(
   const { tableName, table, primaryKeys } = config;
   const { toInsert, toUpdate } = diff;
 
-  // Bulk Inserts in Chunks
   for (let i = 0; i < toInsert.length; i += BATCH_SIZE) {
     const chunk = toInsert.slice(i, i + BATCH_SIZE);
     await db.insert(table).values(chunk);
   }
 
-  // Updates
   for (const item of toUpdate) {
     const whereConditions = primaryKeys.map((pk) =>
       eq(table[pk as string], item[pk])
@@ -344,7 +422,6 @@ async function runSync() {
     { tableName: 'lesson_questions', table: schema.lesson_questions, incomingItems: Array.from(stores.lesson_questions.values()), primaryKeys: ['lesson_id', 'question_id'] },
   ];
 
-  // 1. Compute diffs for all tables
   const diffMap = new Map();
   for (const cfg of configs) {
     const diff = await computeDiff(cfg);
@@ -353,14 +430,12 @@ async function runSync() {
   }
 
   console.log('\nApplying insertions and updates (Top-Down)...');
-  // 2. Insert / Update in Topological Order
   for (const cfg of configs) {
     const diff = diffMap.get(cfg.tableName);
     await applyUpserts(cfg, diff);
   }
 
   console.log('\nPruning removed entities (Bottom-Up)...');
-  // 3. Delete in REVERSE Topological Order to enforce FK safety
   const reverseConfigs = [...configs].reverse();
   for (const cfg of reverseConfigs) {
     const diff = diffMap.get(cfg.tableName);

@@ -1,14 +1,14 @@
 import { query } from '$app/server';
 import { db } from '$lib/server/db';
 import { basic_questions, multistep_questions, multistep_question_parts, maths_questions, multimaths_questions, multimaths_question_parts } from '$lib/server/db/schema';
-import { BasicQuestion, Question, AnswerSubmissionResult, MultistepQuestion, MathsQuestion } from '$lib/types/question';
+import { BasicQuestion, Question, AnswerSubmissionResult, MultistepQuestion, MathsQuestion, Answer } from '$lib/types/question';
 import { sql } from 'drizzle-orm';
 import * as v from 'valibot';
 import { error } from '@sveltejs/kit';
 import { BasicAnswer } from '$lib/types/question';
 import { MathsQuestionTemplate } from '$lib/generator';
 import { MultimathsQuestion } from '$lib/types/question/multimaths';
-import type { GeneratedVariable } from '$lib/types/question/maths';
+import type { GeneratedVariable, MathsAnswer } from '$lib/types/question/maths';
 
 export const fetchBasicQuestionById = query(
     v.object({
@@ -86,7 +86,8 @@ export const fetchMathsQuestionTemplateById = query(
             data.derived,
             data.answers,
             data.hint,
-            data.explanation
+            data.explanation,
+            data.marking_type || "cas",
         );
     }
 );
@@ -107,9 +108,13 @@ export const fetchMathsQuestionById = query(
 export const fetchMultimathsQuestionById = query(
     v.object({
         questionId: v.string(),
+        generatedVariables: v.optional(v.array(v.object({
+            name: v.string(),
+            value: v.string(),
+        }))),
     }),
-    async ({ questionId }): Promise<MultimathsQuestion | null> => {
-        const [multimathsData] = await db.execute<typeof multimaths_questions.$inferSelect>(sql` 
+    async ({ questionId, generatedVariables }): Promise<MultimathsQuestion | null> => {
+        const [multimathsData] = await db.execute<typeof multimaths_questions.$inferSelect>(sql`
               SELECT *
               FROM ${multimaths_questions}
               WHERE ${multimaths_questions.id} = ${questionId}
@@ -117,6 +122,7 @@ export const fetchMultimathsQuestionById = query(
         if (!multimathsData) {
             return null;
         }
+
         let rootTemplate = new MathsQuestionTemplate(
             multimathsData.id,
             multimathsData.prompt,
@@ -124,7 +130,20 @@ export const fetchMultimathsQuestionById = query(
             multimathsData.derived,
             [], null, null,
         );
-        let variables = rootTemplate.generateVariables();
+
+        let baseVariables: GeneratedVariable[] = [...(generatedVariables || [])];
+        for (const constrainedVar of rootTemplate.constrained) {
+            if (!baseVariables.some(v => v.name === constrainedVar.name)) {
+                baseVariables.push({
+                    name: constrainedVar.name,
+                    value: (rootTemplate as any).generateVariableValue(constrainedVar),
+                });
+            }
+        }
+
+        const derivedVariables = rootTemplate.generateDerivedVariables(baseVariables);
+        const variables: GeneratedVariable[] = [...baseVariables, ...derivedVariables];
+
         let rootQuestion = rootTemplate.generate(variables);
 
         const partsData = await db.execute<typeof multimaths_question_parts.$inferSelect>(sql`
@@ -134,12 +153,8 @@ export const fetchMultimathsQuestionById = query(
             ORDER BY ${multimaths_question_parts.index} ASC
         `);
 
-        const stepQuestions = await Promise.all(
+        const stepQuestions: Question<Answer>[] = await Promise.all(
             partsData.map(async (part) => {
-                let template = await fetchMathsQuestionTemplateById({ questionId: part.part_question_id });
-                if (!template) {
-                    throw error(404, `Part question with ID ${part.part_question_id} not found`);
-                }
                 let stepVariables: GeneratedVariable[] = [];
                 for (let globalVariable of variables) {
                     let mappedVariableName = part.variable_mapping[globalVariable.name];
@@ -152,15 +167,35 @@ export const fetchMultimathsQuestionById = query(
                         value: globalVariable.value,
                     });
                 }
-                let question = template.generate(stepVariables);
+
+                let template: any = await fetchMathsQuestionTemplateById({ questionId: part.part_question_id });
+                if (!template) {
+                    template = await fetchMultimathsQuestionById({
+                        questionId: part.part_question_id,
+                        generatedVariables: stepVariables,
+                    });
+                    if (!template) {
+                        throw new Error(`Could not find question template for part question ID ${part.part_question_id}`);
+                    }
+                }
+
+                let question: Question;
+                if (template instanceof MathsQuestionTemplate) {
+                    question = template.generate(stepVariables);
+                } else if (template instanceof MultimathsQuestion) {
+                    question = template;
+                } else {
+                    throw new Error(`Unsupported question type for part question ID ${part.part_question_id}`);
+                }
                 return question;
             })
         );
 
-        return new MultimathsQuestion(rootQuestion.id, rootQuestion.prompt, stepQuestions);
+        let multimaths = new MultimathsQuestion(rootQuestion.id, rootQuestion.prompt, stepQuestions);
+        console.log(`Loaded multimaths question ${multimaths.id} with ${multimaths.steps.length} steps: `, multimaths);
+        return multimaths;
     }
 );
-                                                                                
 
 export const getQuestion = query(
     v.object({
