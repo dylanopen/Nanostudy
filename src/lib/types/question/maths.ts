@@ -53,7 +53,6 @@ export class MathsAnswer extends Answer {
     }
 
     public isCorrect(studentAnswer: string): boolean {
-        console.log(this.markingType);
         if (this.markingType == "cas") {
             return this.isCorrectCas(studentAnswer);
         } else if (this.markingType == "approx") {

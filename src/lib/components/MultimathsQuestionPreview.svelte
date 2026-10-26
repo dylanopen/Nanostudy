@@ -2,7 +2,6 @@
     let { question } = $props();
 
     let finalAnswer = $derived(question.answer.display());
-    console.log("finalAnswer", finalAnswer);
     import QuestionPreview from "$lib/components/QuestionPreview.svelte";
 </script>
 
